@@ -1,0 +1,116 @@
+﻿@page "/adbrixtestevent"
+@inject IJSRuntime JSRuntime
+
+<h1>AdBrix Sample Event</h1>
+<br>
+<table class="table">
+    <thead>
+    <th>EventName</th>
+    <th>Parameter</th>
+    <th>ExcuteButton</th>
+    </thead>
+    <tr>
+        <th>Login</th>
+        <th><input @bind="LoginId" placeholder="Enter your ID" /></th>
+        <th><button class="btn btn-primary" @onclick="Login"> ClickMe </button></th>
+    </tr>
+    <tr>
+        <th>UserProperty</th>
+        <th>
+            <input placeholder="age" @bind="Age" />
+            <p></p>
+            <label>Married? :&nbsp;&nbsp;&nbsp;</label><input type="checkbox" @bind="Married" />
+            <p></p>
+            <input placeholder="Real Name" @bind="RealName" />
+        </th>
+        <th><button class="btn btn-primary" @onclick="UserProperty">ClickMe</button></th>
+    </tr>
+    <tr>
+        <th>SignUp</th>
+        <th><label>SignUp Channel : &nbsp;&nbsp;&nbsp;</label></th>
+    </tr>
+</table>
+<br>
+<h1>AdBrix Event Utility</h1>
+<table>
+    <tr>
+        <th>
+            <button class="btn btn-primary" @onclick="Logout">Logout</button>
+        </th>
+        <th>
+            <button class="btn btn-primary" @onclick="GetUserID">GetUserID</button>
+        </th>
+        <th>
+            <button class="btn btn-primary" @onclick="GetUserInfo">GetUserInfo</button>
+        </th>
+    </tr>
+</table>
+
+
+@code
+{
+
+    private string LoginId { get; set; }
+    private int Age { get; set; }
+    private bool Married { get; set; }
+    private string RealName { get; set; }
+
+    private string CurrentUserID;
+
+    private void Login()
+    {
+
+        if (LoginId != null)
+        {
+            JSRuntime.InvokeVoidAsync("adbrix.login", LoginId);
+            JSRuntime.InvokeVoidAsync("alert", ":::Login Event Complete::: " + "UserID : " + LoginId);
+        }
+        else
+        {
+            JSRuntime.InvokeVoidAsync("alert", "UserID 가 입력되지 않았습니다.");
+        }
+    }
+
+    private void UserProperty()
+    {
+        JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "age", Age);
+        JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "married", Married);
+        JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "realname", RealName);
+        JSRuntime.InvokeVoidAsync("alert", "UserPropertyUpdate");
+    }
+
+    private void Logout()
+    {
+        JSRuntime.InvokeVoidAsync("adbrix.logout");
+        JSRuntime.InvokeVoidAsync("alert", "LogOut Complete");
+    }
+
+    private async Task GetUserID()
+    {
+        CurrentUserID = await JSRuntime.InvokeAsync<string>("adbrix.getUserId");
+
+        if (CurrentUserID != null)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "::: Current UserID ::: " + "UserID : " + CurrentUserID);
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "There is No UserID");
+        }
+
+    }
+
+    private async Task GetUserInfo()
+    {
+
+        object CurrentUserInfo = await JSRuntime.InvokeAsync<object>("adbrix.userProperty.get");
+
+        if (CurrentUserInfo != null)
+        {
+
+            await JSRuntime.InvokeVoidAsync("alert", "::: Current UserInfo ::: " + CurrentUserInfo);
+
+        }
+    }
+
+}
