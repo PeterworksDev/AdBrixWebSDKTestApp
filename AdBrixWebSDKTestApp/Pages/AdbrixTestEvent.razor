@@ -17,17 +17,72 @@
     <tr>
         <th>UserProperty</th>
         <th>
-            <input placeholder="age" @bind="Age" />
+            <label>Age :&nbsp;&nbsp;&nbsp;</label><input placeholder="age" @bind="Age" />
             <p></p>
             <label>Married? :&nbsp;&nbsp;&nbsp;</label><input type="checkbox" @bind="Married" />
             <p></p>
-            <input placeholder="Real Name" @bind="RealName" />
+            <label>Real Name :&nbsp;&nbsp;&nbsp;</label><input placeholder="Real Name" @bind="RealName" />
         </th>
         <th><button class="btn btn-primary" @onclick="UserProperty">ClickMe</button></th>
     </tr>
     <tr>
         <th>SignUp</th>
-        <th><label>SignUp Channel : &nbsp;&nbsp;&nbsp;</label></th>
+        <th>
+            <label for="SignUpChannel">SignUp Channel : &nbsp;&nbsp;&nbsp;</label><select @bind="SignChannelName">
+                <option value="Kakao">Kakao</option>
+                <option value="Naver">Naver</option>
+                <option value="Line">Line</option>
+                <option value="Google">Google</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Twitter">Twitter</option>
+                <option value="whatsApp">WhatsApp</option>
+                <option value="QQ">QQ</option>
+                <option value="WeChat">WeChat</option>
+                <option value="UserId">User ID</option>
+                <option value="ETC">ETC</option>
+                <option value="SkTid">SkTid</option>
+                <option value="AppleId">Apple Id</option>
+                <option value="BlahBlah">BlahBlah Channel</option>
+            </select>
+        </th>
+        <th><button class="btn btn-primary" @onclick="SignUpChannel">ClickMe</button></th>
+    </tr>
+    <tr>
+        <th>Invite</th>
+        <th>
+            <label for="UserInvite">Invite Channel : &nbsp;&nbsp;&nbsp;</label><select @bind="InviteChannelName">
+                <option value="Kakao">Kakao</option>
+                <option value="Naver">Naver</option>
+                <option value="Line">Line</option>
+                <option value="Google">Google</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Twitter">Twitter</option>
+                <option value="whatsApp">WhatsApp</option>
+                <option value="QQ">QQ</option>
+                <option value="WeChat">WeChat</option>
+                <option value="UserId">User ID</option>
+                <option value="ETC">ETC</option>
+                <option value="SkTid">SkTid</option>
+                <option value="AppleId">Apple Id</option>
+                <option value="BlahBlah">BlahBlah Channel</option>
+            </select>
+        </th>
+        <th><button class="btn btn-primary" @onclick="UserInvite">ClickMe</button></th>
+    </tr>
+    <tr>
+        <th>Custom Event</th>
+        <th>
+            <label>Custom Event Name :&nbsp;&nbsp;&nbsp;</label><input placeholder="Custom Event Name" @bind="EventName" />
+            <p></p>
+            <label>Current Level :&nbsp;&nbsp;&nbsp;</label><input placeholder="Level" @bind="Level" />
+            <p></p>
+            <label>Have a Car? :&nbsp;&nbsp;&nbsp;</label><input type="checkbox" @bind="Car" />
+            <p></p>
+            <label>Nick Name :&nbsp;&nbsp;&nbsp;</label><input placeholder="User NickName" @bind="NickName" />
+            <p></p>
+            <label>Fake Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="Fake Parameter" @bind="FakeParameter" />
+        </th>
+        <th><button class="btn btn-primary" @onclick="CustomEvent">ClickMe</button></th>
     </tr>
 </table>
 <br>
@@ -55,7 +110,17 @@
     private bool Married { get; set; }
     private string RealName { get; set; }
 
+    private string EventName { get; set; }
+    private int Level { get; set; }
+    private bool Car { get; set; }
+    private string NickName { get; set; }
+    private string FakeParameter { get; set; }
+
     private string CurrentUserID;
+
+    private string SignChannelName = "Kakao";
+    private string InviteChannelName = "Kakao";
+
 
     private void Login()
     {
@@ -77,6 +142,72 @@
         JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "married", Married);
         JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "realname", RealName);
         JSRuntime.InvokeVoidAsync("alert", "UserPropertyUpdate");
+    }
+
+    private void SignUpChannel()
+    {
+        if (SignChannelName == "BlahBlah")
+        {
+            JSRuntime.InvokeVoidAsync("alert", "This Channel Cannot be Sent to Adbrix" + "ChannelName : " + SignChannelName);
+
+        } else
+
+        {
+            JSRuntime.InvokeVoidAsync("adbrix.common.signUp", SignChannelName);
+            JSRuntime.InvokeVoidAsync("alert", "SignUp Complete" + "SignUp Channel : " + SignChannelName);
+
+        }
+
+    }
+
+    private void UserInvite()
+    {
+        if (InviteChannelName == "BlahBlah")
+        {
+            JSRuntime.InvokeVoidAsync("alert", "This Channel Cannot be Sent to Adbrix" + "ChannelName : " + InviteChannelName);
+
+        }
+        else
+
+        {
+            JSRuntime.InvokeVoidAsync("adbrix.common.invite", InviteChannelName, CurrentUserID);
+            JSRuntime.InvokeVoidAsync("alert", "Invite Complete" + "Invite Channel : " + InviteChannelName);
+
+        }
+
+    }
+
+    private void CustomEvent()
+    {
+
+        if (FakeParameter != null) {
+
+            Dictionary<string, object> myDic = new Dictionary<string, object>();
+            myDic.Add("lever", Level);
+            myDic.Add("havecar", Car);
+            myDic.Add("nickname", NickName);
+            myDic.Add("0FakeParameter", FakeParameter);
+
+
+            JSRuntime.InvokeVoidAsync("adbrix.event.send", EventName, myDic);
+
+            JSRuntime.InvokeVoidAsync("alert", "Custom Event has not been Send" + "Event Name : " + EventName);
+
+
+        }
+        else
+        {
+            Dictionary<string, object> myDic = new Dictionary<string, object>();
+            myDic.Add("lever", Level);
+            myDic.Add("havecar", Car);
+            myDic.Add("nickname", NickName);
+
+            JSRuntime.InvokeVoidAsync("adbrix.event.send", EventName, myDic);
+
+            JSRuntime.InvokeVoidAsync("alert", "Custom Event has been Send" + "Event Name : " + EventName);
+
+
+        }
     }
 
     private void Logout()
