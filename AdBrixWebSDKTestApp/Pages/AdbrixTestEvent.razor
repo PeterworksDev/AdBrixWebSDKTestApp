@@ -74,15 +74,20 @@
         <th>
             <label>Custom Event Name :&nbsp;&nbsp;&nbsp;</label><input placeholder="Custom Event Name" @bind="EventName" />
             <p></p>
-            <label>Current Level :&nbsp;&nbsp;&nbsp;</label><input placeholder="Level" @bind="Level" />
+            <label>Int Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="Int Parameter Name" @bind="IntParameterName" />&nbsp;&nbsp;&nbsp;<input placeholder="Int Value" @bind="IntParameterValue" />
             <p></p>
-            <label>Have a Car? :&nbsp;&nbsp;&nbsp;</label><input type="checkbox" @bind="Car" />
+            <label>Bool Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="Bool Parameter Name" @bind="BoolParameterName" />&nbsp;&nbsp;&nbsp;<input type="checkbox" @bind="BoolParameterValue" />
             <p></p>
-            <label>Nick Name :&nbsp;&nbsp;&nbsp;</label><input placeholder="User NickName" @bind="NickName" />
-            <p></p>
-            <label>Fake Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="Fake Parameter" @bind="FakeParameter" />
+            <label>String Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="String Parameter Name" @bind="StringParameterName" />&nbsp;&nbsp;&nbsp;<input placeholder="String Value" @bind="StringParameterValue" />
         </th>
         <th><button class="btn btn-primary" @onclick="CustomEvent">ClickMe</button></th>
+    </tr>
+    <tr>
+        <th>Use Credit</th>
+        <th>
+            <label>Amount of Credit :&nbsp;&nbsp;&nbsp;</label> <input placeholder="CreditAmmount" @bind="CreditAmmount" />
+        </th>
+        <th><button class="btn btn-primary" @onclick="UseCredit">ClickMe</button></th>
     </tr>
 </table>
 <br>
@@ -93,10 +98,18 @@
             <button class="btn btn-primary" @onclick="Logout">Logout</button>
         </th>
         <th>
-            <button class="btn btn-primary" @onclick="GetUserID">GetUserID</button>
+            <button class="btn btn-primary" @onclick="GetUserID">GetCurrentUserID</button>
         </th>
         <th>
-            <button class="btn btn-primary" @onclick="GetUserInfo">GetUserInfo</button>
+            <button class="btn btn-primary" @onclick="GetUserInfo">GetAlltUserInfo</button>
+        </th>
+    </tr>
+
+</table>
+<table>
+    <tr>
+        <th>
+            <label>Found Value of UserProperty Key :&nbsp;&nbsp;&nbsp;</label><input placeholder="UserPropertyKey" @bind="UserPropertyKey" />&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" @onclick="GetUserPropertyKeyValue">GetUserPropertyKeyValue</button>
         </th>
     </tr>
 </table>
@@ -110,16 +123,23 @@
     private bool Married { get; set; }
     private string RealName { get; set; }
 
+    private string IntParameterName { get; set; }
+    private string StringParameterName { get; set; }
+    private string BoolParameterName { get; set; }
+
     private string EventName { get; set; }
-    private int Level { get; set; }
-    private bool Car { get; set; }
-    private string NickName { get; set; }
-    private string FakeParameter { get; set; }
+    private int IntParameterValue { get; set; }
+    private bool BoolParameterValue { get; set; }
+    private string StringParameterValue { get; set; }
 
     private string CurrentUserID;
 
     private string SignChannelName = "Kakao";
     private string InviteChannelName = "Kakao";
+
+    private int CreditAmmount { get; set; }
+
+    private string UserPropertyKey { get; set; }
 
 
     private void Login()
@@ -138,6 +158,7 @@
 
     private void UserProperty()
     {
+
         JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "age", Age);
         JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "married", Married);
         JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "realname", RealName);
@@ -154,7 +175,7 @@
 
         {
             JSRuntime.InvokeVoidAsync("adbrix.common.signUp", SignChannelName);
-            JSRuntime.InvokeVoidAsync("alert", "SignUp Complete" + "SignUp Channel : " + SignChannelName);
+            JSRuntime.InvokeVoidAsync("alert", "SignUp Complete " + "SignUp Channel : " + SignChannelName);
 
         }
 
@@ -170,8 +191,8 @@
         else
 
         {
-            JSRuntime.InvokeVoidAsync("adbrix.common.invite", InviteChannelName, CurrentUserID);
-            JSRuntime.InvokeVoidAsync("alert", "Invite Complete" + "Invite Channel : " + InviteChannelName);
+            JSRuntime.InvokeVoidAsync("adbrix.common.invite", InviteChannelName, LoginId);
+            JSRuntime.InvokeVoidAsync("alert", "Invite Complete " + "Invite Channel : " + InviteChannelName);
 
         }
 
@@ -180,34 +201,32 @@
     private void CustomEvent()
     {
 
-        if (FakeParameter != null) {
+        Dictionary<string, object> myDic = new Dictionary<string, object>();
+        myDic.Add(IntParameterName, IntParameterValue);
+        myDic.Add(BoolParameterName, BoolParameterValue);
+        myDic.Add(StringParameterName, StringParameterValue);
 
-            Dictionary<string, object> myDic = new Dictionary<string, object>();
-            myDic.Add("lever", Level);
-            myDic.Add("havecar", Car);
-            myDic.Add("nickname", NickName);
-            myDic.Add("0FakeParameter", FakeParameter);
+        JSRuntime.InvokeVoidAsync("adbrix.event.send", EventName, myDic);
 
+        JSRuntime.InvokeVoidAsync("alert", "Custom Event has been Send " + "Event Name : " + EventName);
 
-            JSRuntime.InvokeVoidAsync("adbrix.event.send", EventName, myDic);
+    }
 
-            JSRuntime.InvokeVoidAsync("alert", "Custom Event has not been Send" + "Event Name : " + EventName);
-
-
-        }
-        else
+    private void UseCredit()
+    {
+        if (CreditAmmount != 0)
         {
-            Dictionary<string, object> myDic = new Dictionary<string, object>();
-            myDic.Add("lever", Level);
-            myDic.Add("havecar", Car);
-            myDic.Add("nickname", NickName);
 
-            JSRuntime.InvokeVoidAsync("adbrix.event.send", EventName, myDic);
+            JSRuntime.InvokeVoidAsync("adbrix.common.useCredit", CreditAmmount);
 
-            JSRuntime.InvokeVoidAsync("alert", "Custom Event has been Send" + "Event Name : " + EventName);
-
+            JSRuntime.InvokeVoidAsync("alert", "Credit Used " + "Ammount Credit : " + CreditAmmount);
+        } else
+        {
+            JSRuntime.InvokeVoidAsync("alert", "No Credit Has been Used");
 
         }
+
+
     }
 
     private void Logout()
@@ -242,6 +261,13 @@
             await JSRuntime.InvokeVoidAsync("alert", "::: Current UserInfo ::: " + CurrentUserInfo);
 
         }
+    }
+
+    private async Task GetUserPropertyKeyValue()
+    {
+        object getUserPropertyValue = await JSRuntime.InvokeAsync<object>("adbrix.userProperty.get", UserPropertyKey);
+
+        await JSRuntime.InvokeVoidAsync("alert", "value is :::" + getUserPropertyValue);
     }
 
 }
