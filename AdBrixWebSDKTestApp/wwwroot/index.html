@@ -20,11 +20,12 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script src="myscript.js"></script>
-    <!--<script src="https://s3-ap-northeast-1.amazonaws.com/abxrm.script/abx-web-sdk.dev.js"></script>-->
+    <<script src="https://s3-ap-northeast-1.amazonaws.com/abxrm.script/abx-web-sdk.dev.js"></script>
     <script>window.adbrix.init({
             appkey: 'mnOMgdk3PUuLtW5sddXlgg',
             webSecretkey: 'LZ1iqXwLLEmjoBf7fn5t6A',
+            isOptOut: true,
+            supportUrlQueryKeys: ['test_param1', 'test_param2'],
             isExecPageViewEvent: true,
             isIncludeUtm: true,
             isIncludeNaver: true,
