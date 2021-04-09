@@ -253,7 +253,7 @@
     private async Task GetUserInfo()
     {
 
-        object CurrentUserInfo = await JSRuntime.InvokeAsync<object>("adbrix.userProperty.get");
+        object CurrentUserInfo = await JSRuntime.InvokeAsync<object>("adbrix.userProperty.getAll");
 
         if (CurrentUserInfo != null)
         {
