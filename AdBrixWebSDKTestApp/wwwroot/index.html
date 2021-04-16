@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -12,22 +11,21 @@
 </head>
 
 <body>
-    <div id="app" class="text-xl">Loading...</div>
-
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
+    <div id="app">Loading...</div>
+    
     <script src="_framework/blazor.webassembly.js"></script>
-    <script>!function (e, r) { if (void 0 !== e && !e.adbrix) { var t = { queue: [] }, n = navigator.userAgent.toLowerCase(), o = r.createElement("script"), i = "Netscape" === navigator.appName && -1 !== navigator.userAgent.search("Trident") || -1 !== n.indexOf("msie") ? "abx-web-sdk.ie.min.js" : "abx-web-sdk.min.js"; o.type = "text/javascript", o.async = !0, o.src = "https://static.adbrix.io/web-sdk/latest/" + i, o.onload = function () { e.adbrix.runQueuedFunctions ? e.adbrix.runQueuedFunctions() : console.log("[adbrix] Error: could not load SDK") }; var a = r.getElementsByTagName("script")[0]; a.parentNode.insertBefore(o, a);["init", "onInitialized", "login", "getUserId", "logout", "userProperty.get", "userProperty.getAll", "userProperty.addOrUpdate", "userProperty.remove", "userProperty.removes", "common.signUp", "common.invite", "common.useCredit", "event.send", "debug.traceListener"].forEach(function (e) { var r = e.split("."), n = r.pop(); r.reduce(function (e, r) { return e[r] = e[r] || {} }, t)[n] = function () { t.queue.push([e, arguments]) } }), e.adbrix = t } }(window, document);</script>
+
+    <!-- Initialize AdBrix SDK -->
+    <script>!function(e,r){if(void 0!==e&&!e.adbrix){var t={queue:[]},o=navigator.userAgent.toLowerCase(),n=r.createElement("script"),i="Netscape"===navigator.appName&&-1!==navigator.userAgent.search("Trident")||-1!==o.indexOf("msie")?"abx-web-sdk.ie.min.js":"abx-web-sdk.min.js";n.type="text/javascript",n.async=!0,n.src="//static.adbrix.io/web-sdk/latest/"+i,n.onload=function(){e.adbrix.runQueuedFunctions?e.adbrix.runQueuedFunctions():console.log("[adbrix] Error: could not load SDK")};var a=r.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);["init","onInitialized","login","getUserId","logout","userProperty.get","userProperty.getAll","userProperty.addOrUpdate","userProperty.remove","userProperty.removes","common.signUp","common.invite","common.useCredit","common.purchase","event.send","debug.traceListener","commerceAttr.categories","commerceAttr.product"].forEach(function(e){var r=e.split("."),o=r.pop();r.reduce(function(e,r){return e[r]=e[r]||{}},t)[o]=function(){t.queue.push([e,arguments])}}),e.adbrix=t}}(window,document);</script>
+   
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="/__/firebase/8.1.2/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!-- https://firebase.google.com/docs/web/setup#available-libraries -->
     <!-- Initialize Firebase -->
     <script src="/__/firebase/init.js"></script>
+
+    <!-- Initialize AdBrix SDK -->
     <script>window.adbrix.init({
     appkey: 'fnbFMvaGgkGVcajnoIeUTw',
     webSecretkey: 'RHVbFIofrUm4JXSVWvc0mg',

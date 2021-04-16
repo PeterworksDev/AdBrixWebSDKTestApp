@@ -1,16 +1,96 @@
 @page "/AdBrixCommerceEvent"
-<h1>AdbrixCommerceEvent</h1>
-<p></p>
-<p></p>
-<table class="table-auto border-collapse border border-black">
-    <thead>
-    <th>CommerceProperty</th>
-    <th>product_1</th>
-    <th>product_2</th>
-    <th>product_3</th>
-    </thead>
-</table>
+<h1 class="font-sans text-3xl font-bold">AdBrix Commerce Event</h1>
+<br>
+    <table class="shadow-lg bg-white">
+        <thead>
+        <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">Product_Property</th>
+        <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">product_1</th>
+        <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">product_2</th>
+        <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">product_3</th>
+        </thead>
+        <tr>
+            <td class="border-2 px-8 py-2">Product Id</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductId1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductId2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductId3"/></td>
+        </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Product Name</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductName1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductName2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductName3"/></td>
+        </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Price</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductPrice1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductPrice2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductPrice3"/></td>
+        </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Quanity</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductQuanity1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductQuanity2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductQuanity3"/></td>
+        </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Discount</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductDiscount1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductDiscount2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductDiscount3"/></td>
+        </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Currency</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductCurrency1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductCurrency2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductCurrency3"/></td>
+        </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Category</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductCategory1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductCategory2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductCategory3"/></td>
+        </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Product Attr</td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductAttr1"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductAttr2"/></td>
+            <td class="border-2 px-8 py-2"><input class="border py-2 px-3" @bind="ProductAttr3"/></td>
+        </tr>
+    </table>
 
 @code {
+    
+    private string ProductId1 { get; set; }
+    private string ProductId2 { get; set; }
+    private string ProductId3 { get; set; }
+    
+    private string ProductName1 { get; set; }
+    private string ProductName2 { get; set; }
+    private string ProductName3 { get; set; }
+    
+    private Double ProductPrice1 { get; set; }
+    private Double ProductPrice2 { get; set; }
+    private Double ProductPrice3 { get; set; }
+
+    private int ProductQuanity1 { get; set; }
+    private int ProductQuanity2 { get; set; }
+    private int ProductQuanity3 { get; set; }
+    
+    private Double ProductDiscount1 { get; set; }
+    private Double ProductDiscount2 { get; set; }
+    private Double ProductDiscount3 { get; set; }
+    
+    private string ProductCurrency1 { get; set; }
+    private string ProductCurrency2 { get; set; }
+    private string ProductCurrency3 { get; set; }
+
+    private string ProductCategory1 { get; set; }
+    private string ProductCategory2 { get; set; }
+    private string ProductCategory3 { get; set; }
+    
+    private string ProductAttr1 { get; set; }
+    private string ProductAttr2 { get; set; }
+    private string ProductAttr3 { get; set; }
+
     
 }

@@ -1,34 +1,41 @@
 ﻿@page "/AdBrixCommonEvent"
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 
-<h1>AdBrix Common Event</h1>
+<h1 class="font-sans text-3xl font-bold">AdBrix Common Event</h1>
 <br>
-<table class="table-auto border-solid">
+<table class="shadow-lg bg-white">
     <thead>
-    <th>EventName</th>
-    <th>Parameter</th>
-    <th>ExcuteButton</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">EventName</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">Parameter</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">ExcuteButton</th>
     </thead>
     <tr>
-        <th>Login</th>
-        <th><input @bind="LoginId" placeholder="Enter your ID" /></th>
-        <th><button class="btn btn-primary" @onclick="Login"> ClickMe </button></th>
-    </tr>
-    <tr>
-        <th>UserProperty</th>
-        <th>
-            <label>Age :&nbsp;&nbsp;&nbsp;</label><input placeholder="age" @bind="Age" />
-            <p></p>
-            <label>Married? :&nbsp;&nbsp;&nbsp;</label><input type="checkbox" @bind="Married" />
-            <p></p>
-            <label>Real Name :&nbsp;&nbsp;&nbsp;</label><input placeholder="Real Name" @bind="RealName" />
+        <th class="border-2 px-8 py-2">Login</th>
+        <th class="border-2 px-8 py-2">
+            <input class="border py-2 px-3" @bind="LoginId" placeholder="Enter your ID"/>
         </th>
-        <th><button class="btn btn-primary" @onclick="UserProperty">ClickMe</button></th>
+        <th class="border-2 px-8 py-2 content-center">
+            <button class="btn btn-primary" @onclick="Login"> ClickMe </button>
+        </th>
     </tr>
     <tr>
-        <th>SignUp</th>
-        <th>
-            <label for="SignUpChannel">SignUp Channel : &nbsp;&nbsp;&nbsp;</label><select @bind="SignChannelName">
+        <th class="border-2 px-8 py-2">UserProperty</th>
+        <th class="border-2 px-8 py-2">
+            <label>Age :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="age" @bind="Age"/>
+            <p></p>
+            <label>Married? :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" type="checkbox" @bind="Married"/>
+            <p></p>
+            <label>Real Name :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="Real Name" @bind="RealName"/>
+        </th>
+        <th class="border-2 px-8 py-2 content-center">
+            <button class="btn btn-primary" @onclick="UserProperty">ClickMe</button>
+        </th>
+    </tr>
+    <tr>
+        <th class="border-2 px-8 py-2">SignUp</th>
+        <th class="border-2 px-8 py-2">
+            <label for="SignUpChannel">SignUp Channel : &nbsp;&nbsp;&nbsp;</label>
+            <select class="border py-2 px-3" @bind="SignChannelName">
                 <option value="Kakao">Kakao</option>
                 <option value="Naver">Naver</option>
                 <option value="Line">Line</option>
@@ -45,12 +52,15 @@
                 <option value="BlahBlah">BlahBlah Channel</option>
             </select>
         </th>
-        <th><button class="btn btn-primary" @onclick="SignUpChannel">ClickMe</button></th>
+        <th class="border-2 px-8 py-2 content-center">
+            <button class="btn btn-primary" @onclick="SignUpChannel">ClickMe</button>
+        </th>
     </tr>
-    <tr>
-        <th>Invite</th>
-        <th>
-            <label for="UserInvite">Invite Channel : &nbsp;&nbsp;&nbsp;</label><select @bind="InviteChannelName">
+    <tr class="border-2 px-8 py-2">
+        <th class="border-2 px-8 py-2">Invite</th>
+        <th class="border-2 px-8 py-2">
+            <label for="UserInvite">Invite Channel : &nbsp;&nbsp;&nbsp;</label>
+            <select class="border py-2 px-3" @bind="InviteChannelName">
                 <option value="Kakao">Kakao</option>
                 <option value="Naver">Naver</option>
                 <option value="Line">Line</option>
@@ -67,57 +77,62 @@
                 <option value="BlahBlah">BlahBlah Channel</option>
             </select>
         </th>
-        <th><button class="btn btn-primary" @onclick="UserInvite">ClickMe</button></th>
-    </tr>
-    <tr>
-        <th>Custom Event</th>
-        <th>
-            <label>Custom Event Name :&nbsp;&nbsp;&nbsp;</label><input placeholder="Custom Event Name" @bind="EventName" />
-            <p></p>
-            <label>Int Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="Int Parameter Name" @bind="IntParameterName" />&nbsp;&nbsp;&nbsp;<input placeholder="Int Value" @bind="IntParameterValue" />
-            <p></p>
-            <label>Bool Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="Bool Parameter Name" @bind="BoolParameterName" />&nbsp;&nbsp;&nbsp;<input type="checkbox" @bind="BoolParameterValue" />
-            <p></p>
-            <label>String Parameter :&nbsp;&nbsp;&nbsp;</label><input placeholder="String Parameter Name" @bind="StringParameterName" />&nbsp;&nbsp;&nbsp;<input placeholder="String Value" @bind="StringParameterValue" />
+        <th class="border-2 px-8 py-2 content-center">
+            <button class="btn btn-primary" @onclick="UserInvite">ClickMe</button>
         </th>
-        <th><button class="btn btn-primary" @onclick="CustomEvent">ClickMe</button></th>
     </tr>
-    <tr>
-        <th>Use Credit</th>
-        <th>
-            <label>Amount of Credit :&nbsp;&nbsp;&nbsp;</label> <input placeholder="CreditAmmount" @bind="CreditAmmount" />
+    <tr class="border-2 px-8 py-2">
+        <th class="border-2 px-8 py-2">Custom Event</th>
+        <th class="border-2 px-8 py-2">
+            <label>Custom Event Name :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="Custom Event Name" @bind="EventName"/>
+            <p></p>
+            <label>Int Parameter :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="Int Parameter Name" @bind="IntParameterName"/>&nbsp;&nbsp;&nbsp;<input class="border py-2 px-3" placeholder="Int Value" @bind="IntParameterValue"/>
+            <p></p>
+            <label>Bool Parameter :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="Bool Parameter Name" @bind="BoolParameterName"/>&nbsp;&nbsp;&nbsp;<input type="checkbox" @bind="BoolParameterValue"/>
+            <p></p>
+            <label>String Parameter :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="String Parameter Name" @bind="StringParameterName"/>&nbsp;&nbsp;&nbsp;<input class="border py-2 px-3" placeholder="String Value" @bind="StringParameterValue"/>
         </th>
-        <th><button class="btn btn-primary" @onclick="UseCredit">ClickMe</button></th>
+        <th class="border-2 px-8 py-2 content-center">
+            <button class="btn btn-primary" @onclick="CustomEvent">ClickMe</button>
+        </th>
+    </tr>
+    <tr class="border-2 px-8 py-2">
+        <th class="border-2 px-8 py-2">Use Credit</th>
+        <th class="border-2 px-8 py-2">
+            <label>Amount of Credit :&nbsp;&nbsp;&nbsp;</label> <input class="border py-2 px-3" placeholder="CreditAmmount" @bind="CreditAmmount"/>
+        </th>
+        <th class="border-2 px-8 py-2 content-center">
+            <button class="btn btn-primary" @onclick="UseCredit">ClickMe</button>
+        </th>
     </tr>
 </table>
 <br>
-<h1>AdBrix Event Utility</h1>
+<h1 class="text-2xl font-sans">AdBrix Event Utility</h1>
+<br>
 <table>
     <tr>
         <th>
             <button class="btn btn-primary" @onclick="Logout">Logout</button>
         </th>
         <th>
-            <button class="btn btn-primary" @onclick="GetUserID">GetCurrentUserID</button>
+            <button class="btn btn-primary" @onclick="GetUserId">GetCurrentUserID</button>
         </th>
         <th>
             <button class="btn btn-primary" @onclick="GetUserInfo">GetAlltUserInfo</button>
         </th>
     </tr>
-
 </table>
+<br>
 <table>
     <tr>
         <th>
-            <label>Found Value of UserProperty Key :&nbsp;&nbsp;&nbsp;</label><input placeholder="UserPropertyKey" @bind="UserPropertyKey" />&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" @onclick="GetUserPropertyKeyValue">GetUserPropertyKeyValue</button>
+            <label>Found Value of UserProperty Key :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="UserPropertyKey" @bind="UserPropertyKey"/>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" @onclick="GetUserPropertyKeyValue">GetUserPropertyKeyValue</button>
         </th>
     </tr>
 </table>
 
-
 @code
 {
-
     private string LoginId { get; set; }
     private int Age { get; set; }
     private bool Married { get; set; }
@@ -141,133 +156,161 @@
 
     private string UserPropertyKey { get; set; }
 
+    private Dictionary<string, Object> UserInfo = new Dictionary<string, object>();
+
+    private static List<string> ChannelName()
+    {
+        List<string> _channelName = new List<string>();
+        _channelName.Add("Kakao");
+        _channelName.Add("Naver");
+        _channelName.Add("Line");
+        _channelName.Add("Google");
+        _channelName.Add("Facebook");
+        _channelName.Add("Twitter");
+        _channelName.Add("whatsApp");
+        _channelName.Add("QQ");
+        _channelName.Add("WeChat");
+        _channelName.Add("UserID");
+        _channelName.Add("ETC");
+        _channelName.Add("SkTid");
+        _channelName.Add("AppleId");
+
+        return _channelName;
+    }
+
 
     private void Login()
     {
-
-        if (LoginId != null)
-        {
-            JSRuntime.InvokeVoidAsync("adbrix.login", LoginId);
-            JSRuntime.InvokeVoidAsync("alert", ":::Login Event Complete::: " + "UserID : " + LoginId);
-        }
-        else
-        {
-            JSRuntime.InvokeVoidAsync("alert", "UserID 가 입력되지 않았습니다.");
-        }
+    //AbxEventController.AbxLogin(LoginId);
+        JsRuntime.InvokeVoidAsync("adbrix.login", LoginId);
+        JsRuntime.InvokeVoidAsync("alert", ":::Login Event Complete::: " + "UserID : " + LoginId);
     }
 
     private void UserProperty()
     {
+        UserInfo.Add("age", Age);
+        UserInfo.Add("married", Married);
+        UserInfo.Add("realName", RealName);
+    // AbxEventController.UserProperty(UserInfo);
 
-        JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "age", Age);
-        JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "married", Married);
-        JSRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", "realname", RealName);
-        JSRuntime.InvokeVoidAsync("alert", "UserPropertyUpdate");
+        foreach (KeyValuePair<string, Object> items in UserInfo)
+        {
+            JsRuntime.InvokeVoidAsync("adbrix.userProperty.addOrUpdate", items.Key, items.Value);
+        }
+
+        JsRuntime.InvokeVoidAsync("alert", ":::UserProperty Updated::: " + "UserProperty : " + UserInfo.ToString());
     }
 
     private void SignUpChannel()
     {
-        if (SignChannelName == "BlahBlah")
+    // AbxEventController.SignUp(SignChannelName);
+
+        if (ChannelName().Contains(SignChannelName))
         {
-            JSRuntime.InvokeVoidAsync("alert", "This Channel Cannot be Sent to Adbrix" + "ChannelName : " + SignChannelName);
-
-        } else
-
-        {
-            JSRuntime.InvokeVoidAsync("adbrix.common.signUp", SignChannelName);
-            JSRuntime.InvokeVoidAsync("alert", "SignUp Complete " + "SignUp Channel : " + SignChannelName);
-
+            JsRuntime.InvokeVoidAsync("adbrix.common.invite", SignChannelName, LoginId);
+            JsRuntime.InvokeVoidAsync("alert", "SignUp Complete");
         }
-
+        else
+        {
+            JsRuntime.InvokeVoidAsync("alert", "This Channel not Available");
+        }
     }
 
     private void UserInvite()
     {
-        if (InviteChannelName == "BlahBlah")
+    //AbxEventController.UserInvite(InviteChannelName, LoginId);
+        if (ChannelName().Contains(InviteChannelName))
         {
-            JSRuntime.InvokeVoidAsync("alert", "This Channel Cannot be Sent to Adbrix" + "ChannelName : " + InviteChannelName);
-
+            JsRuntime.InvokeVoidAsync("adbrix.common.invite", InviteChannelName, LoginId);
+            JsRuntime.InvokeVoidAsync("alert", "UserInvite Complete");
         }
         else
-
         {
-            JSRuntime.InvokeVoidAsync("adbrix.common.invite", InviteChannelName, LoginId);
-            JSRuntime.InvokeVoidAsync("alert", "Invite Complete " + "Invite Channel : " + InviteChannelName);
-
+            JsRuntime.InvokeVoidAsync("alert", "This Channel not Available");
         }
-
     }
 
     private void CustomEvent()
     {
-
         Dictionary<string, object> myDic = new Dictionary<string, object>();
         myDic.Add(IntParameterName, IntParameterValue);
         myDic.Add(BoolParameterName, BoolParameterValue);
         myDic.Add(StringParameterName, StringParameterValue);
 
-        JSRuntime.InvokeVoidAsync("adbrix.event.send", EventName, myDic);
+    //   AbxEventController.CustomEvent(EventName,myDic);
 
-        JSRuntime.InvokeVoidAsync("alert", "Custom Event has been Send " + "Event Name : " + EventName);
-
+        JsRuntime.InvokeVoidAsync("adbrix.event.send", EventName, myDic);
     }
 
     private void UseCredit()
     {
         if (CreditAmmount != 0)
         {
-
-            JSRuntime.InvokeVoidAsync("adbrix.common.useCredit", CreditAmmount);
-
-            JSRuntime.InvokeVoidAsync("alert", "Credit Used " + "Ammount Credit : " + CreditAmmount);
-        } else
+            JsRuntime.InvokeVoidAsync("adbrix.common.useCredit", CreditAmmount);
+            JsRuntime.InvokeVoidAsync("alert", "Use Create ::::::" + CreditAmmount.ToString());
+        }
+        else
         {
-            JSRuntime.InvokeVoidAsync("alert", "No Credit Has been Used");
-
+            JsRuntime.InvokeVoidAsync("alert", "No Creadit has been used");
         }
 
-
+    // AbxEventController.UseCredit(CreditAmmount);
     }
 
     private void Logout()
     {
-        JSRuntime.InvokeVoidAsync("adbrix.logout");
-        JSRuntime.InvokeVoidAsync("alert", "LogOut Complete");
+    //AbxEventController.Logout();
+
+        JsRuntime.InvokeVoidAsync("adbrix.logout");
+        JsRuntime.InvokeVoidAsync("alert", "LogOut Complete");
     }
 
-    private async Task GetUserID()
+    private async Task GetUserId()
     {
-        CurrentUserID = await JSRuntime.InvokeAsync<string>("adbrix.getUserId");
+    //await AbxEventController.GetUserID();
+
+        CurrentUserID = await JsRuntime.InvokeAsync<string>("adbrix.getUserId");
 
         if (CurrentUserID != null)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "::: Current UserID ::: " + "UserID : " + CurrentUserID);
+            await JsRuntime.InvokeVoidAsync("alert", "Current UserID ::::: " + CurrentUserID);
         }
         else
         {
-            await JSRuntime.InvokeVoidAsync("alert", "There is No UserID");
+            await JsRuntime.InvokeVoidAsync("alert", "User did not Login");
         }
-
     }
 
     private async Task GetUserInfo()
     {
+    //await AbxEventController.GetUserInfo();
+        object currentUserInfo = await JsRuntime.InvokeAsync<object>("adbrix.userProperty.getAll");
 
-        object CurrentUserInfo = await JSRuntime.InvokeAsync<object>("adbrix.userProperty.getAll");
-
-        if (CurrentUserInfo != null)
+        if (currentUserInfo != null)
         {
-
-            await JSRuntime.InvokeVoidAsync("alert", "::: Current UserInfo ::: " + CurrentUserInfo);
-
+            await JsRuntime.InvokeVoidAsync("alert", "Current UserInfo ::::: " + currentUserInfo.ToString());
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "User Did not Login");
         }
     }
 
     private async Task GetUserPropertyKeyValue()
     {
-        object getUserPropertyValue = await JSRuntime.InvokeAsync<object>("adbrix.userProperty.get", UserPropertyKey);
+    //await AbxEventController.GetUserPropertyKeyValue(UserPropertyKey);
+        object getUserPropertyValue =
+            await JsRuntime.InvokeAsync<object>("adbrix.userProperty.get", UserPropertyKey);
 
-        await JSRuntime.InvokeVoidAsync("alert", "value is :::" + getUserPropertyValue);
+        if (getUserPropertyValue != null)
+        {
+            string getUserPropertyValueString = getUserPropertyValue.ToString();
+            await JsRuntime.InvokeVoidAsync("alert", "Current UserProperty Value ::::: " + getUserPropertyValueString);
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "No values on that key");
+        }
     }
 
 }
