@@ -160,6 +160,40 @@
 </table>
 <br>
 <h1 class="text-2xl font-sans">AdBrix Commerce Event Utility</h1>
+<br>
+<tr>
+    <td class="font-bold">Purchase</td>
+    <td>
+        <p class="mx-2">OrderID</p>
+    </td>
+    <td>
+        <input class="border py-2 px-3 w-32 mx-2" placeholder="OrderID" @bind="OrderID"/>
+    </td>
+    <td class="mx-2">Order Sale</td>
+    <td>
+        <input class="border py-2 px-3 w-32 mx-2" placeholder="Order Sale" @bind="OrderSale"/>
+    </td>
+    <td class="mx-2">Discount</td>
+    <td>
+        <input class="border py-2 px-3 w-32	mx-2" placeholder="Discount" @bind="Discount"/>
+    </td>
+    <td class="mx-2">Delivery Charge</td>
+    <td>
+        <input class="border py-2 px-3 w-32	mx-2" placeholder="Delivery Charge" @bind="DeliveryCharge"/>
+    </td>
+    <td class="mx-2">Payment Method</td>
+    <td>
+        <select class="border py-2 px-3 mx-2" @bind="PaymentMethodString">
+            @foreach (var items in PaymentMethod())
+            {
+                <option value=@items>@items</option>
+            }
+        </select>
+    </td>
+    <td>
+        <button class="btn btn-primary mx-2" @onclick="Purchase">Purchase</button>
+    </td>
+</tr>
 
 
 @code {
@@ -210,6 +244,12 @@
     private string ProductAttr2 { get; set; }
     private string ProductAttr3 { get; set; }
 
+    private string OrderID { get; set; }
+    private Double OrderSale { get; set; }
+    private Double Discount { get; set; }
+    private Double DeliveryCharge { get; set; }
+    private string PaymentMethodString { get; set; }
+
     private List<String> CurrencyName()
     {
         List<String> currecyName = new List<string>();
@@ -230,10 +270,20 @@
         return currecyName;
     }
 
+    private List<string> PaymentMethod()
+    {
+        List<string> paymentMethod = new List<string>();
+        paymentMethod.Add("CreditCard");
+        paymentMethod.Add("BankTransfer");
+        paymentMethod.Add("MobilePayment");
+        paymentMethod.Add("ETC");
+
+        return paymentMethod;
+    }
+
     private List<object> productList = new List<object>();
 
-
-    private async Task Product1Set()
+    private async void Product1Set()
     {
         object categorySet;
 
@@ -265,16 +315,79 @@
         {
             productList.Add(productSet1);
         }
-
-        await JsRuntime.InvokeVoidAsync("adbrix.common.purchase", "myOrderID", productList, 59000.00, 1500.00, 2500.00, "CreditCard");
     }
 
-    private void Product2Set()
+    private async void Product2Set()
     {
+        object categorySet;
+
+        if (ProductCategory2_1 != null | ProductCategory2_2 != null | ProductCategory2_3 != null | ProductCategory2_4 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory2_0, ProductCategory2_1, ProductCategory2_2, ProductCategory2_3, ProductCategory2_4);
+        }
+        else if (ProductCategory2_1 != null | ProductCategory2_2 != null | ProductCategory2_3 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory2_0, ProductCategory2_1, ProductCategory2_2, ProductCategory2_3);
+        }
+        else if (ProductCategory2_1 != null | ProductCategory2_2 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory2_0, ProductCategory2_1, ProductCategory2_2);
+        }
+        else if (ProductCategory2_1 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory2_0, ProductCategory2_1);
+        }
+        else
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory2_0);
+        }
+
+
+        var productSet2 = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.product", ProductId2, ProductName2, ProductPrice2, ProductQuanity2, ProductDiscount2, ProductCurrency2, categorySet);
+
+        if (productSet2 != null)
+        {
+            productList.Add(productSet2);
+        }
     }
 
-    private void Product3Set()
+    private async void Product3Set()
     {
+        object categorySet;
+
+        if (ProductCategory3_1 != null | ProductCategory3_2 != null | ProductCategory3_3 != null | ProductCategory3_4 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory3_0, ProductCategory3_1, ProductCategory3_2, ProductCategory3_3, ProductCategory3_4);
+        }
+        else if (ProductCategory3_1 != null | ProductCategory3_2 != null | ProductCategory3_3 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory3_0, ProductCategory3_1, ProductCategory3_2, ProductCategory3_3);
+        }
+        else if (ProductCategory3_1 != null | ProductCategory3_2 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory3_0, ProductCategory3_1, ProductCategory3_2);
+        }
+        else if (ProductCategory3_1 != null)
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory3_0, ProductCategory3_1);
+        }
+        else
+        {
+            categorySet = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.categories", ProductCategory3_0);
+        }
+
+
+        var productSet3 = await JsRuntime.InvokeAsync<object>("adbrix.commerceAttr.product", ProductId3, ProductName3, ProductPrice3, ProductQuanity3, ProductDiscount3, ProductCurrency3, categorySet);
+
+        if (productSet3 != null)
+        {
+            productList.Add(productSet3);
+        }
+    }
+
+    private async void Purchase()
+    {
+        await JsRuntime.InvokeVoidAsync("adbrix.common.purchase", OrderID, productList, OrderSale, Discount, DeliveryCharge, PaymentMethodString);
     }
 
 
