@@ -12,10 +12,10 @@
     <tr>
         <th class="border-2 px-8 py-2">Login</th>
         <th class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" @bind="LoginId" placeholder="Enter your ID"/>
+            <label>Login Id :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" @bind="LoginId" placeholder="Enter your ID"/>
         </th>
-        <th class="border-2 px-8 py-2 content-center">
-            <button class="btn btn-primary" @onclick="Login"> ClickMe </button>
+        <th class="border-2 px-8 py-2 text-center">
+            <button class="btn btn-primary" @onclick="Login"> Login </button>
         </th>
     </tr>
     <tr>
@@ -27,8 +27,8 @@
             <p></p>
             <label>Real Name :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="Real Name" @bind="RealName"/>
         </th>
-        <th class="border-2 px-8 py-2 content-center">
-            <button class="btn btn-primary" @onclick="UserProperty">ClickMe</button>
+        <th class="border-2 px-8 py-2 text-center">
+            <button class="btn btn-primary" @onclick="UserProperty">Set UserProperty</button>
         </th>
     </tr>
     <tr>
@@ -36,24 +36,14 @@
         <th class="border-2 px-8 py-2">
             <label for="SignUpChannel">SignUp Channel : &nbsp;&nbsp;&nbsp;</label>
             <select class="border py-2 px-3" @bind="SignChannelName">
-                <option value="Kakao">Kakao</option>
-                <option value="Naver">Naver</option>
-                <option value="Line">Line</option>
-                <option value="Google">Google</option>
-                <option value="Facebook">Facebook</option>
-                <option value="Twitter">Twitter</option>
-                <option value="whatsApp">WhatsApp</option>
-                <option value="QQ">QQ</option>
-                <option value="WeChat">WeChat</option>
-                <option value="UserId">User ID</option>
-                <option value="ETC">ETC</option>
-                <option value="SkTid">SkTid</option>
-                <option value="AppleId">Apple Id</option>
-                <option value="BlahBlah">BlahBlah Channel</option>
+                @foreach (var items in ChannelName())
+                {
+                    <option value=@items>@items</option>
+                }
             </select>
         </th>
-        <th class="border-2 px-8 py-2 content-center">
-            <button class="btn btn-primary" @onclick="SignUpChannel">ClickMe</button>
+        <th class="border-2 px-8 py-2 text-center">
+            <button class="btn btn-primary" @onclick="SignUpChannel">SignUp Event</button>
         </th>
     </tr>
     <tr class="border-2 px-8 py-2">
@@ -61,24 +51,14 @@
         <th class="border-2 px-8 py-2">
             <label for="UserInvite">Invite Channel : &nbsp;&nbsp;&nbsp;</label>
             <select class="border py-2 px-3" @bind="InviteChannelName">
-                <option value="Kakao">Kakao</option>
-                <option value="Naver">Naver</option>
-                <option value="Line">Line</option>
-                <option value="Google">Google</option>
-                <option value="Facebook">Facebook</option>
-                <option value="Twitter">Twitter</option>
-                <option value="whatsApp">WhatsApp</option>
-                <option value="QQ">QQ</option>
-                <option value="WeChat">WeChat</option>
-                <option value="UserId">User ID</option>
-                <option value="ETC">ETC</option>
-                <option value="SkTid">SkTid</option>
-                <option value="AppleId">Apple Id</option>
-                <option value="BlahBlah">BlahBlah Channel</option>
+                @foreach (var items in ChannelName())
+                {
+                    <option value=@items>@items</option>
+                }
             </select>
         </th>
-        <th class="border-2 px-8 py-2 content-center">
-            <button class="btn btn-primary" @onclick="UserInvite">ClickMe</button>
+        <th class="border-2 px-8 py-2 text-center">
+            <button class="btn btn-primary" @onclick="UserInvite">Invite Event</button>
         </th>
     </tr>
     <tr class="border-2 px-8 py-2">
@@ -92,8 +72,8 @@
             <p></p>
             <label>String Parameter :&nbsp;&nbsp;&nbsp;</label><input class="border py-2 px-3" placeholder="String Parameter Name" @bind="StringParameterName"/>&nbsp;&nbsp;&nbsp;<input class="border py-2 px-3" placeholder="String Value" @bind="StringParameterValue"/>
         </th>
-        <th class="border-2 px-8 py-2 content-center">
-            <button class="btn btn-primary" @onclick="CustomEvent">ClickMe</button>
+        <th class="border-2 px-8 py-2 text-center">
+            <button class="btn btn-primary" @onclick="CustomEvent">Custom Event</button>
         </th>
     </tr>
     <tr class="border-2 px-8 py-2">
@@ -101,8 +81,8 @@
         <th class="border-2 px-8 py-2">
             <label>Amount of Credit :&nbsp;&nbsp;&nbsp;</label> <input class="border py-2 px-3" placeholder="CreditAmmount" @bind="CreditAmmount"/>
         </th>
-        <th class="border-2 px-8 py-2 content-center">
-            <button class="btn btn-primary" @onclick="UseCredit">ClickMe</button>
+        <th class="border-2 px-8 py-2 text-center">
+            <button class="btn btn-primary" @onclick="UseCredit">Use Credit</button>
         </th>
     </tr>
 </table>
