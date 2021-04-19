@@ -134,18 +134,6 @@
         </td>
     </tr>
     <tr>
-        <td class="border-2 px-8 py-2">Product Attr</td>
-        <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" @bind="ProductAttr1"/>
-        </td>
-        <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" @bind="ProductAttr2"/>
-        </td>
-        <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" @bind="ProductAttr3"/>
-        </td>
-    </tr>
-    <tr>
         <td class="border-2 px-8 py-2">Product Set</td>
         <td class="border-2 px-8 py-2 text-center">
             <button class="btn btn-primary" @onclick="Product1Set">Product 1 set</button>
@@ -157,6 +145,12 @@
             <button class="btn btn-primary" @onclick="Product3Set">Product 3 set</button>
         </td>
     </tr>
+        <tr>
+            <td class="border-2 px-8 py-2">Product clear</td>
+            <td colspan="3" class="border-2 px-8 py-2 text-center">
+                <button class="btn btn-primary" @onclick="ProductClear">Product Clear</button>
+            </td>
+        </tr>
 </table>
 <br>
 <h1 class="text-2xl font-sans">AdBrix Commerce Event Utility</h1>
@@ -390,5 +384,18 @@
         await JsRuntime.InvokeVoidAsync("adbrix.common.purchase", OrderID, productList, OrderSale, Discount, DeliveryCharge, PaymentMethodString);
     }
 
+    private void ProductClear()
+    {
+        if (productList.Count >= 1)
+        {
+            productList.Clear();
+            JsRuntime.InvokeVoidAsync("alert", "Product is reset!!!");
 
+        }
+        else
+        {
+            JsRuntime.InvokeVoidAsync("alert", "There is no product to reset!!");
+
+        }
+    }
 }
