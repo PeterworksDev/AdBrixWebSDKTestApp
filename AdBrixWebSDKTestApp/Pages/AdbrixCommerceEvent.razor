@@ -13,25 +13,25 @@
     <tr>
         <td class="border-2 px-8 py-2">Product Id</td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" placeholder="Inser Product ID" @bind="ProductId1"/>
+            <input class="border py-2 px-3" @bind="ProductId1"/>
         </td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" placeholder="Inser Product ID" @bind="ProductId2"/>
+            <input class="border py-2 px-3" @bind="ProductId2"/>
         </td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" placeholder="Inser Product ID" @bind="ProductId3"/>
+            <input class="border py-2 px-3" @bind="ProductId3"/>
         </td>
     </tr>
     <tr>
         <td class="border-2 px-8 py-2">Product Name</td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" placeholder="Inser Product Name" @bind="ProductName1"/>
+            <input class="border py-2 px-3" @bind="ProductName1"/>
         </td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" placeholder="Inser Product Name" @bind="ProductName2"/>
+            <input class="border py-2 px-3" @bind="ProductName2"/>
         </td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3" placeholder="Inser Product Name" @bind="ProductName3"/>
+            <input class="border py-2 px-3" @bind="ProductName3"/>
         </td>
     </tr>
     <tr>
@@ -100,37 +100,37 @@
     <tr>
         <td class="border-2 px-8 py-2">Category</td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory1_0"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory1_0"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory1_1"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory1_1"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory1_2"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory1_2"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory1_3"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory1_3"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory1_4"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory1_4"/>
         </td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory2_0"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory2_0"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory2_1"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory2_1"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory2_2"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory2_2"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory2_3"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory2_3"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory2_4"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory2_4"/>
         </td>
         <td class="border-2 px-8 py-2">
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory3_0"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory3_0"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory3_1"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory3_1"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory3_2"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory3_2"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory3_3"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory3_3"/>
             <br>
-            <input class="border py-2 px-3 my-0.5" placeholder="Product Category" @bind="ProductCategory3_4"/>
+            <input class="border py-2 px-3 my-0.5" @bind="ProductCategory3_4"/>
         </td>
     </tr>
     <tr>
@@ -233,11 +233,7 @@
     private string ProductCategory3_2 { get; set; }
     private string ProductCategory3_3 { get; set; }
     private string ProductCategory3_4 { get; set; }
-
-    private string ProductAttr1 { get; set; }
-    private string ProductAttr2 { get; set; }
-    private string ProductAttr3 { get; set; }
-
+    
     private string OrderID { get; set; }
     private Double OrderSale { get; set; }
     private Double Discount { get; set; }
@@ -309,6 +305,7 @@
         {
             productList.Add(productSet1);
         }
+        
     }
 
     private async void Product2Set()

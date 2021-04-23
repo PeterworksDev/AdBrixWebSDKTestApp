@@ -1,0 +1,150 @@
+@page "/FirebaseTestPage"
+@inject IJSRuntime JsRuntime
+
+<h3>FirebaseTestPage</h3>
+
+<tr>
+    <td class="font-bold">FireBase Test</td>
+    <td>
+        <p class="mx-2">Collection ID</p>
+    </td>
+    <td>
+        <input class="border py-2 px-3 w-32 mx-2" placeholder="Collection ID" @bind="UserId"/>
+    </td>
+    <td class="mx-2">FirstName</td>
+    <td>
+        <input class="border py-2 px-3 w-32 mx-2" placeholder="FirstName" @bind="FirstName"/>
+    </td>
+    <td class="mx-2">LastName</td>
+    <td>
+        <input class="border py-2 px-3 w-32	mx-2" placeholder="LastName" @bind="LastName"/>
+    </td>
+    <td class="mx-2">BornYear</td>
+    <td>
+        <input class="border py-2 px-3 w-32	mx-2" placeholder="BornYear" @bind="BornYear"/>
+    </td>
+    <td>
+        <button class="btn btn-primary mx-2" @onclick="sendDB">sendDB</button>
+        <button class="btn btn-primary mx-2" @onclick="getDB">getDB</button>
+        <button class="btn btn-primary mx-2" @onclick="getPopUp">getpopup</button>
+        <button class="btn btn-primary mx-2" @onclick="GetFireStoreData">closepopup</button>
+    </td>
+</tr>
+
+<table>
+    <thead>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">UserID</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">First Name</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">Last Name</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">Born Year</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">Option</th>
+    </thead>
+
+    @if (getDataResult)
+    {
+        var dataSetter = FirestoreData as Dictionary<string, Dictionary<string, object>>;
+
+        if (dataSetter != null)
+        {
+            foreach (var dataset in dataSetter)
+            {
+                string useridFromFirebase = dataset.Key;
+                var dataValueSet = dataset.Value;
+
+                foreach (var dataValue in dataValueSet)
+                {
+                    object dataValueSetKey;
+                    <tr>
+                        <td class="border-2 px-8 py-2">@useridFromFirebase</td>
+                        <td class="border-2 px-8 py-2">@dataValueSet.TryGetValue("first", out dataValueSetKey)</td>
+                        <td class="border-2 px-8 py-2">@dataValueSet.TryGetValue("last", out dataValueSetKey)</td>
+                        <td class="border-2 px-8 py-2">@dataValueSet.TryGetValue("born", out dataValueSetKey)</td>
+                        <td class="border-2 px-8 py-2">
+                            <button class="btn btn-primary mx-2">Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    }
+    else
+    {
+        <tr>
+    <td colspan="5" class="border-2 px-8 py-2 text-center">There is no Data</td>
+    </tr>
+    }
+
+
+</table>
+
+
+@if (ShowComponent)
+{
+    <LayerdPopup></LayerdPopup>
+}
+
+@code {
+
+
+    private string UserId { get; set; }
+    private string FirstName { get; set; }
+    private string LastName { get; set; }
+    private int BornYear { get; set; }
+    private object FirestoreData { get; set; }
+    bool ShowComponent { get; set; } = false;
+    bool getDataResult { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        //GetFireStoreData();
+    }
+    
+    protected override void OnParametersSet()
+    {
+        GetFireStoreData();
+    }
+
+    private void sendDB()
+    {
+        JsRuntime.InvokeVoidAsync("FireStoreSendData", UserId, FirstName, LastName, BornYear);
+    }
+
+    private void getDB()
+    {
+        JsRuntime.InvokeVoidAsync("FireStoreGetData", UserId);
+    }
+
+    private void getPopUp()
+    {
+        ShowComponent = true;
+    }
+
+    private void closePopup()
+    {
+        ShowComponent = false;
+    }
+
+    private async Task GetFireStoreData()
+    {
+        FirestoreData = await JsRuntime.InvokeAsync<object>("FireStoreGetAllData");
+
+        if (FirestoreData != "{}")
+        {
+            await JsRuntime.InvokeVoidAsync("console.log", "::: FirestoreData::: " + FirestoreData);
+
+            await JsRuntime.InvokeVoidAsync("console.log", "firebaseData Type : " + FirestoreData.GetType());
+
+            getDataResult = true;
+        }
+    }
+
+    private bool DeleteFirebaseData(string userId)
+    {
+        JsRuntime.InvokeVoidAsync("FireStoreDeleteData", userId);
+
+        GetFireStoreData();
+
+        return true;
+    }
+
+}
