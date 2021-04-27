@@ -1,4 +1,4 @@
-function FirebaseInit(){
+function FirebaseInit() {
 
     const firebaseConfig = {
         apiKey: "AIzaSyCnQXoDeesP246QqXLYSyZkZFGQSAGBBEg",
@@ -9,15 +9,15 @@ function FirebaseInit(){
         messagingSenderId: "478198654862",
         appId: "1:478198654862:web:e338520d3af72cfcf7e6df"
     };
-    
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 }
 
 function FireStoreSendData(userId, firstName, lastName, bornYear) {
-    
+
     let db = firebase.firestore();
-    
+
     console.log("userID :::: " + userId);
     console.log("firstName :::: " + firstName);
     console.log("lastName :::: " + lastName);
@@ -34,61 +34,70 @@ function FireStoreSendData(userId, firstName, lastName, bornYear) {
             alert("Document Successfully upload");
         })
         .catch((error) => {
-         //   console.error("Error adding document: ", error);
+            //   console.error("Error adding document: ", error);
             alert("Error adding document:  " + error);
 
         });
 
 }
 
-function FireStoreGetData (userId) {
-    
+function FireStoreGetData(userId) {
+
     let db = firebase.firestore();
-    
+
     var docRef = db.collection("User").doc(userId);
-    
+
     docRef.get().then((doc) => {
         if (doc.exists) {
-            console.log ("Document data : " , doc.data());
+            console.log("Document data : ", doc.data());
         } else {
-            alert ("No such document!")
+            alert("No such document!")
         }
     }).catch((error) => {
         alert("Error getting document:  " + error);
     })
-    
+
     return doc.data();
 }
 
-function FireStoreGetAllData(){
-    
-    let db = firebase.firestore();
-    let dataMap = new Map();
+async function FireStoreGetAllData() {
 
-    db.collection("User").get().then((querySnapshot) => {
+    let db = firebase.firestore();
+    let dataSet = {};
+    let dataArrayList = [];
+
+    const querySnapshot = await db.collection("User").get();
+    if (querySnapshot != null) {
+
         querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
-            
-            let dataset = new Map();
+
             let docId = doc.id;
             let docdata = doc.data();
-            
+
             let firstName = docdata.first;
             let lastName = docdata.last;
             let bornData = docdata.born;
-            
-            dataset.set('first', firstName);
-            dataset.set('last' , lastName);
-            dataset.set('born', bornData)
-            
-            dataMap.set(docId, dataset);
+
+            dataSet = {
+                id: docId,
+                first: firstName,
+                last: lastName,
+                born: bornData
+            }
+
+            dataArrayList.push(dataSet);
+
         });
-    });
-    
-    return dataMap;
+
+        return JSON.stringify(dataArrayList);
+
+    } else {
+        return null;
+    }
 }
 
-function FireStoreDeleteData(userId){
+
+function FireStoreDeleteData(userId) {
     let db = firebase.firestore();
 
     db.collection("User").doc(userId).delete().then(() => {

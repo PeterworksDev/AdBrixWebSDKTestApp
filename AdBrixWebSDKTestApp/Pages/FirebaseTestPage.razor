@@ -1,9 +1,10 @@
 @page "/FirebaseTestPage"
+@using Newtonsoft.Json.Linq
 @inject IJSRuntime JsRuntime
 
-<h3>FirebaseTestPage</h3>
-
-<tr>
+<h1 class="font-sans text-3xl font-bold">FirebaseTestPage</h1>
+<br>
+<table>
     <td class="font-bold">FireBase Test</td>
     <td>
         <p class="mx-2">Collection ID</p>
@@ -23,14 +24,16 @@
     <td>
         <input class="border py-2 px-3 w-32	mx-2" placeholder="BornYear" @bind="BornYear"/>
     </td>
-    <td>
-        <button class="btn btn-primary mx-2" @onclick="sendDB">sendDB</button>
-        <button class="btn btn-primary mx-2" @onclick="getDB">getDB</button>
-        <button class="btn btn-primary mx-2" @onclick="getPopUp">getpopup</button>
-        <button class="btn btn-primary mx-2" @onclick="GetFireStoreData">closepopup</button>
-    </td>
-</tr>
-
+    <tr>
+        <td>
+            <button class="btn btn-primary mx-2" @onclick="sendDB">sendDB</button>
+            <button class="btn btn-primary mx-2" @onclick="getDB">getDB</button>
+            <button class="btn btn-primary mx-2" @onclick="getPopUp">getpopup</button>
+            <button class="btn btn-primary mx-2" @onclick="GetFireStoreData">closepopup</button>
+        </td>
+    </tr>
+</table>
+<br>
 <table>
     <thead>
     <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">UserID</th>
@@ -40,44 +43,44 @@
     <th class="bg-blue-400 border-2 text-center text-white px-8 py-3">Option</th>
     </thead>
 
-    @if (getDataResult)
+    @if (FirestoreData != null)
     {
-        var dataSetter = FirestoreData as Dictionary<string, Dictionary<string, object>>;
+        var fireStoreDataString = FirestoreData.ToString();
 
-        if (dataSetter != null)
+        var jArray = JArray.Parse(fireStoreDataString);
+
+        JsRuntime.InvokeVoidAsync("console.log", "::: dataString::: " + jArray);
+
+        foreach (JObject dataset in jArray)
         {
-            foreach (var dataset in dataSetter)
-            {
-                string useridFromFirebase = dataset.Key;
-                var dataValueSet = dataset.Value;
+            var dataString = dataset.ToString();
 
-                foreach (var dataValue in dataValueSet)
-                {
-                    object dataValueSetKey;
-                    <tr>
-                        <td class="border-2 px-8 py-2">@useridFromFirebase</td>
-                        <td class="border-2 px-8 py-2">@dataValueSet.TryGetValue("first", out dataValueSetKey)</td>
-                        <td class="border-2 px-8 py-2">@dataValueSet.TryGetValue("last", out dataValueSetKey)</td>
-                        <td class="border-2 px-8 py-2">@dataValueSet.TryGetValue("born", out dataValueSetKey)</td>
-                        <td class="border-2 px-8 py-2">
-                            <button class="btn btn-primary mx-2">Delete</button>
-                        </td>
-                    </tr>
-                }
-            }
+            JsRuntime.InvokeVoidAsync("console.log", "::: dataString::: " + dataString);
+
+            var dataId = dataset.GetValue("id").ToString();
+            var dataFrist = dataset.GetValue("first").ToString();
+            var dataLast = dataset.GetValue("last").ToString();
+            var dataBorn = dataset.GetValue("born").ToString();
+
+            <tr>
+                <td class="border-2 px-8 py-2">@dataId</td>
+                <td class="border-2 px-8 py-2">@dataFrist</td>
+                <td class="border-2 px-8 py-2">@dataLast</td>
+                <td class="border-2 px-8 py-2">@dataBorn</td>
+                <td class="border-2 px-8 py-2">
+                    <button class="btn btn-primary mx-2" @onclick="DeleteFirebaseData">Delete</button>
+                </td>
+            </tr>
         }
     }
     else
     {
         <tr>
-    <td colspan="5" class="border-2 px-8 py-2 text-center">There is no Data</td>
-    </tr>
+            <td colspan="5" class="border-2 px-8 py-2 text-center">There is no Data</td>
+        </tr>
     }
-
-
 </table>
-
-
+<br>
 @if (ShowComponent)
 {
     <LayerdPopup></LayerdPopup>
@@ -85,28 +88,23 @@
 
 @code {
 
-
     private string UserId { get; set; }
     private string FirstName { get; set; }
     private string LastName { get; set; }
     private int BornYear { get; set; }
     private object FirestoreData { get; set; }
-    bool ShowComponent { get; set; } = false;
-    bool getDataResult { get; set; } = false;
+    bool ShowComponent { get; set; }
+    private string userDataId { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        //GetFireStoreData();
-    }
-    
-    protected override void OnParametersSet()
-    {
-        GetFireStoreData();
+        await GetFireStoreData();
     }
 
-    private void sendDB()
+    private async void sendDB()
     {
-        JsRuntime.InvokeVoidAsync("FireStoreSendData", UserId, FirstName, LastName, BornYear);
+        await JsRuntime.InvokeVoidAsync("FireStoreSendData", UserId, FirstName, LastName, BornYear);
+        await GetFireStoreData();
     }
 
     private void getDB()
@@ -128,23 +126,18 @@
     {
         FirestoreData = await JsRuntime.InvokeAsync<object>("FireStoreGetAllData");
 
-        if (FirestoreData != "{}")
+        if (FirestoreData != null)
         {
             await JsRuntime.InvokeVoidAsync("console.log", "::: FirestoreData::: " + FirestoreData);
-
             await JsRuntime.InvokeVoidAsync("console.log", "firebaseData Type : " + FirestoreData.GetType());
-
-            getDataResult = true;
         }
     }
 
-    private bool DeleteFirebaseData(string userId)
+    private async Task DeleteFirebaseData()
     {
-        JsRuntime.InvokeVoidAsync("FireStoreDeleteData", userId);
+        await JsRuntime.InvokeVoidAsync("FireStoreDeleteData", userDataId);
 
-        GetFireStoreData();
-
-        return true;
+        await GetFireStoreData();
     }
 
 }
