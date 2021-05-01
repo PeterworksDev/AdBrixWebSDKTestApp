@@ -1,0 +1,46 @@
+@page "/MLNetTestPage"
+@using SampleClassification.Model
+<h1 class="font-sans text-3xl font-bold">ML.NET Test Page</h1>
+<tr>
+    <td>
+        <p class="mx-2">How are you feel today?</p>
+    </td>
+    <td>
+        <input class="border py-2 px-3 w-32 mx-2" placeholder="Input Text" @bind="@inputText"/>
+    </td>
+</tr>
+<tr>
+    <td>
+        <button class="btn btn-primary mx-2" @onclick="@GetResult">Get Result</button>
+    </td>
+    <td>
+        @if (sentimentResult != null)
+        {
+            <p class="mx-2">@sentimentResult</p>
+        }
+        else
+        {
+            <p class="mx-2">Thres is no Result</p>
+        }
+    </td>
+</tr>
+
+@code {
+
+    string inputText { get; set; }
+    string sentimentResult { get; set; }
+
+    private void GetResult()
+    {
+        var input = new ModelInput
+        {
+            Col0 = inputText
+        };
+
+        var result = ConsumeModel.Predict(input);
+        var sentiment = result.Prediction == "1" ? "Positive" : "Nagative";
+
+        sentimentResult = sentiment;
+    }
+
+}

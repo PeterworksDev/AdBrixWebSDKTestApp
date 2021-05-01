@@ -5,7 +5,6 @@
 <h1 class="font-sans text-3xl font-bold">FirebaseTestPage</h1>
 <br>
 <table>
-    <td class="font-bold">FireBase Test</td>
     <td>
         <p class="mx-2">Collection ID</p>
     </td>
@@ -24,6 +23,9 @@
     <td>
         <input class="border py-2 px-3 w-32	mx-2" placeholder="BornYear" @bind="BornYear"/>
     </td>
+</table>
+<br>
+<table>
     <tr>
         <td>
             <button class="btn btn-primary mx-2" @onclick="sendDB">sendDB</button>
@@ -57,16 +59,16 @@
 
             JsRuntime.InvokeVoidAsync("console.log", "::: dataString::: " + dataString);
 
-            var dataId = dataset.GetValue("id").ToString();
-            var dataFrist = dataset.GetValue("first").ToString();
-            var dataLast = dataset.GetValue("last").ToString();
-            var dataBorn = dataset.GetValue("born").ToString();
+            DataUserId = dataset.GetValue("id").ToString();
+            DataFirst = dataset.GetValue("first").ToString();
+            DataLast = dataset.GetValue("last").ToString();
+            DataBorn = dataset.GetValue("born").ToString();
 
             <tr>
-                <td class="border-2 px-8 py-2">@dataId</td>
-                <td class="border-2 px-8 py-2">@dataFrist</td>
-                <td class="border-2 px-8 py-2">@dataLast</td>
-                <td class="border-2 px-8 py-2">@dataBorn</td>
+                <td class="border-2 px-8 py-2">@DataUserId</td>
+                <td class="border-2 px-8 py-2">@DataFirst</td>
+                <td class="border-2 px-8 py-2">@DataLast</td>
+                <td class="border-2 px-8 py-2">@DataBorn</td>
                 <td class="border-2 px-8 py-2">
                     <button class="btn btn-primary mx-2" @onclick="DeleteFirebaseData">Delete</button>
                 </td>
@@ -94,7 +96,12 @@
     private int BornYear { get; set; }
     private object FirestoreData { get; set; }
     bool ShowComponent { get; set; }
-    private string userDataId { get; set; }
+
+    public string DataUserId { get; set; }
+    public string DataFirst { get; set; }
+    public string DataLast { get; set; }
+    public string DataBorn { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -135,7 +142,7 @@
 
     private async Task DeleteFirebaseData()
     {
-        await JsRuntime.InvokeVoidAsync("FireStoreDeleteData", userDataId);
+        await JsRuntime.InvokeVoidAsync("FireStoreDeleteData", DataUserId);
 
         await GetFireStoreData();
     }
