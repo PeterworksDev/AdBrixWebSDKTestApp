@@ -17,4 +17,10 @@
         <ProjectReference Include="..\SampleClassification\SampleClassification.Model\SampleClassification.Model.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="wwwroot\Data\MLModel.zip">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
 </Project>

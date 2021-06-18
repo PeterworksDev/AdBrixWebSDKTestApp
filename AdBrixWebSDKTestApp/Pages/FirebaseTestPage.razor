@@ -64,13 +64,16 @@
             DataLast = dataset.GetValue("last").ToString();
             DataBorn = dataset.GetValue("born").ToString();
 
+            JsRuntime.InvokeVoidAsync("console.log", "::: FireStoreUserID::: " + DataUserId);
+
+
             <tr>
                 <td class="border-2 px-8 py-2">@DataUserId</td>
                 <td class="border-2 px-8 py-2">@DataFirst</td>
                 <td class="border-2 px-8 py-2">@DataLast</td>
                 <td class="border-2 px-8 py-2">@DataBorn</td>
                 <td class="border-2 px-8 py-2">
-                    <button class="btn btn-primary mx-2" @onclick="DeleteFirebaseData">Delete</button>
+                    <button class="btn btn-primary mx-2" @onclick="e => DeleteFirebaseData(DataUserId)">Delete</button>
                 </td>
             </tr>
         }
@@ -140,9 +143,11 @@
         }
     }
 
-    private async Task DeleteFirebaseData()
+    private async Task DeleteFirebaseData(string userId)
     {
-        await JsRuntime.InvokeVoidAsync("FireStoreDeleteData", DataUserId);
+        await JsRuntime.InvokeVoidAsync("console.log", "::: FireStoreUserIDDelete::: " + userId);
+
+        await JsRuntime.InvokeVoidAsync("FireStoreDeleteData", userId);
 
         await GetFireStoreData();
     }

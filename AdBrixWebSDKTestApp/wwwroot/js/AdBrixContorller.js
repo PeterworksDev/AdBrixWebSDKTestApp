@@ -18,7 +18,7 @@
     }
 }(window, document);
 
-function AdBrixInit (){
+function AdBrixInit() {
     window.adbrix.init({
         appkey: 'fnbFMvaGgkGVcajnoIeUTw',
         webSecretkey: 'RHVbFIofrUm4JXSVWvc0mg',
