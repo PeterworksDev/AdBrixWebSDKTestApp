@@ -115,6 +115,7 @@
     {
         await JsRuntime.InvokeVoidAsync("FireStoreSendData", UserId, FirstName, LastName, BornYear);
         await GetFireStoreData();
+        StateHasChanged();
     }
 
     private void getDB()
