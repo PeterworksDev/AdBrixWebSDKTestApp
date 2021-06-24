@@ -1,0 +1,30 @@
+@page "/DeeplinkTester"
+@inject IJSRuntime JsRuntime
+
+<h1 class="font-sans text-3xl font-bold">DeeplinkTester</h1>
+<br>
+
+
+<tr>
+    <td>
+        <p class="mx-2">Deeplink Value</p>
+    </td>
+    <td>
+        <input class="border py-2 px-3" placeholder="Deeplink" @bind="@Deeplink"/>
+    </td>
+    <td>
+        <button class="btn btn-primary mx-2" @onclick="@DeeplinkCall">DeeplinkOpen</button>
+    </td>
+</tr>
+
+@code {
+
+    private string Deeplink = "thehyundaitohome://tohome.thehyundai.com/front/dp/dpd/mgzDetail.do?mgzNo=210302100576001&utm_source=kakao&utm_medium=bizboard&utm_content=새들러&ReferCode=232&tcCode=0000000095&kwCode=0000373132";
+
+    private void DeeplinkCall()
+    {
+        JsRuntime.InvokeVoidAsync("window.location.assign", Deeplink);
+        JsRuntime.InvokeVoidAsync("console.log", "::: Current Deeplink::: " + Deeplink);
+    }
+
+}
