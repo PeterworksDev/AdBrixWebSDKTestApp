@@ -11,7 +11,7 @@
         <p class="mx-2">AppKey</p>
     </td>
     <td>
-        <input class="border py-2 px-3 w-32 mx-2" placeholder="Appkey" @bind="Appkey"/>
+        <input class="border py-2 px-3 my-0.5" placeholder="Appkey" @bind="Appkey"/>
     </td>
     <td class="mx-2">PostbackType</td>
     <td>
@@ -142,33 +142,33 @@
                 var serverTime = Convert.ToInt64(getServerTime);
 
                 _peterworks.Appkey = items.GetProperty("appkey").ToString();
-                ;
+
                 _peterworks.PostbackType = items.GetProperty("postbackType").ToString();
-                ;
+
                 _peterworks.Adid = items.GetProperty("adid").ToString();
-                ;
-                _peterworks.Idfv = items.GetProperty("adid").ToString();
-                ;
+
+                _peterworks.Idfv = items.GetProperty("idfv").ToString();
+
                 _peterworks.AttrType = items.GetProperty("attrType").ToString();
-                ;
+
                 _peterworks.EventName = items.GetProperty("eventName").ToString();
-                ;
+
                 _peterworks.EventTime = eventTime;
                 _peterworks.ServerTime = serverTime;
                 _peterworks.Platform = items.GetProperty("platform").ToString();
-                ;
+
                 _peterworks.Carrier = items.GetProperty("carrier").ToString();
-                ;
+
                 _peterworks.DeviceModel = items.GetProperty("deviceModel").ToString();
-                ;
+
                 _peterworks.Language = items.GetProperty("language").ToString();
-                ;
+
                 _peterworks.Country = items.GetProperty("country").ToString();
-                ;
+
                 _peterworks.PeterParameter = items.GetProperty("peterParameter").ToString();
-                ;
+
                 _peterworks.WorksParameter = items.GetProperty("worksParameter").ToString();
-                ;
+
                 _peterworksList.Add(_peterworks);
             }
         }
