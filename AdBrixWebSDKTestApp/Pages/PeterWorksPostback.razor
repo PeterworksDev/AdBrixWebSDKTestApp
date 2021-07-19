@@ -15,7 +15,7 @@
     </td>
     <td class="mx-2">PostbackType</td>
     <td>
-        <select class="border py-2 px-3 mx-2" @bind="PostbackType">
+        <select class="border py-2 px-3 mx-2" @bind="_postbackType">
             @foreach (var items in postbackTypeList())
             {
                 <option value=@items>@items</option>
@@ -24,15 +24,16 @@
     </td>
     <td class="mx-2">StartDate</td>
     <td>
-        <input type="date" class="border py-2 px-3 my-0.5" @bind="StartDate"/>
+        <input type="date" class="border py-2 px-3 my-0.5" @bind="_startDate"/>
     </td>
     <td class="mx-2">EndDate</td>
     <td>
-        <input type="date" class="border py-2 px-3 my-0.5" @bind="EndDate"/>
+        <input type="date" class="border py-2 px-3 my-0.5" @bind="_endDate"/>
     </td>
 </table>
 <br>
 <button class="btn btn-primary mx-2" @onclick="GetPostback">GetPostback</button>
+<br>
 <br>
 <table>
     <thead>
@@ -46,10 +47,10 @@
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">ServerTime</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Platform</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Carrier</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">DeviceModel</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Language</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Country</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Peter_parameter</th>
-    <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Works_parameter</th>
     </thead>
 
     @if (_peterworksList != null)
@@ -66,10 +67,10 @@
             var serverTime = peterValue.ServerTime;
             var platform = peterValue.Platform;
             var carrier = peterValue.Carrier;
+            var deviceModel = peterValue.DeviceModel;
             var language = peterValue.Language;
             var country = peterValue.Country;
             var peter_parameter = peterValue.PeterParameter;
-            var works_parameter = peterValue.WorksParameter;
 
             var eventDateTime = new DateTime(1970, 1, 1).AddSeconds(eventTime).ToLocalTime();
             var serverDateTime = new DateTime(1970, 1, 1).AddSeconds(serverTime).ToLocalTime();
@@ -85,10 +86,10 @@
                 <td class="border-2 text-center text-xs px-2 py-2">@serverDateTime</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@platform</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@carrier</td>
+                <td class="border-2 text-center text-xs px-2 py-2">@deviceModel</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@language</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@country</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@peter_parameter</td>
-                <td class="border-2 text-center text-xs px-2 py-2">@works_parameter</td>
             </tr>
         }
     }
@@ -103,12 +104,10 @@
 @code {
 
     private string Appkey { get; set; }
-    private string PostbackType = "install";
-    private DateTime StartDate = DateTime.Today;
-    private DateTime EndDate = DateTime.Today.AddDays(1.0);
-
+    private string _postbackType = "install";
+    private DateTime _startDate = DateTime.Today;
+    private DateTime _endDate = DateTime.Today.AddDays(1.0);
     private List<Peterworks> _peterworksList;
-
     private Peterworks _peterworks;
 
     private List<string> postbackTypeList()
@@ -124,53 +123,47 @@
     {
         _peterworksList = new List<Peterworks>();
 
-        var startDateUnix = (long) StartDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
-        var endDateUnix = (long) EndDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
+        var startDateUnix = (long) _startDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
+        var endDateUnix = (long) _endDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
 
-        var jsonData = await HttpClient.GetFromJsonAsync<JsonElement[]>($"https://peterpostback.azurewebsites.net/api/Peterworks/get/appkey={Appkey}&postback_type={PostbackType}&startdate={startDateUnix}&enddate={endDateUnix}");
-
-        if (jsonData != null)
+        if (Appkey != null)
         {
-            foreach (var items in jsonData)
+            var jsonData = await HttpClient.GetFromJsonAsync<JsonElement[]>($"https://peterpostback.azurewebsites.net/api/Peterworks/get/appkey={Appkey}&postback_type={_postbackType}&startdate={startDateUnix}&enddate={endDateUnix}");
+
+            if (jsonData != null)
             {
-                _peterworks = new Peterworks();
+                foreach (var items in jsonData)
+                {
+                    _peterworks = new Peterworks();
 
-                var getEventTime = items.GetProperty("eventTime").ToString();
-                var getServerTime = items.GetProperty("serverTime").ToString();
+                    var getEventTime = items.GetProperty("eventTime").ToString();
+                    var getServerTime = items.GetProperty("serverTime").ToString();
 
-                var eventTime = Convert.ToInt64(getEventTime);
-                var serverTime = Convert.ToInt64(getServerTime);
+                    var eventTime = Convert.ToInt64(getEventTime);
+                    var serverTime = Convert.ToInt64(getServerTime);
 
-                _peterworks.Appkey = items.GetProperty("appkey").ToString();
+                    _peterworks.Appkey = items.GetProperty("appkey").ToString();
+                    _peterworks.PostbackType = items.GetProperty("postbackType").ToString();
+                    _peterworks.Adid = items.GetProperty("adid").ToString();
+                    _peterworks.Idfv = items.GetProperty("idfv").ToString();
+                    _peterworks.AttrType = items.GetProperty("attrType").ToString();
+                    _peterworks.EventName = items.GetProperty("eventName").ToString();
+                    _peterworks.EventTime = eventTime;
+                    _peterworks.ServerTime = serverTime;
+                    _peterworks.Platform = items.GetProperty("platform").ToString();
+                    _peterworks.Carrier = items.GetProperty("carrier").ToString();
+                    _peterworks.DeviceModel = items.GetProperty("deviceModel").ToString();
+                    _peterworks.Language = items.GetProperty("language").ToString();
+                    _peterworks.Country = items.GetProperty("country").ToString();
+                    _peterworks.PeterParameter = items.GetProperty("peterParameter").ToString();
 
-                _peterworks.PostbackType = items.GetProperty("postbackType").ToString();
-
-                _peterworks.Adid = items.GetProperty("adid").ToString();
-
-                _peterworks.Idfv = items.GetProperty("idfv").ToString();
-
-                _peterworks.AttrType = items.GetProperty("attrType").ToString();
-
-                _peterworks.EventName = items.GetProperty("eventName").ToString();
-
-                _peterworks.EventTime = eventTime;
-                _peterworks.ServerTime = serverTime;
-                _peterworks.Platform = items.GetProperty("platform").ToString();
-
-                _peterworks.Carrier = items.GetProperty("carrier").ToString();
-
-                _peterworks.DeviceModel = items.GetProperty("deviceModel").ToString();
-
-                _peterworks.Language = items.GetProperty("language").ToString();
-
-                _peterworks.Country = items.GetProperty("country").ToString();
-
-                _peterworks.PeterParameter = items.GetProperty("peterParameter").ToString();
-
-                _peterworks.WorksParameter = items.GetProperty("worksParameter").ToString();
-
-                _peterworksList.Add(_peterworks);
+                    _peterworksList.Add(_peterworks);
+                }
             }
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "::: AppKey is Empty !!! ::: ");
         }
 
         return _peterworksList;
