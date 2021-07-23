@@ -31,5 +31,7 @@ namespace AdBrixWebSDKTestApp.Models
         public string Country { get; set; }
 
         public string PeterParameter { get; set; }
+
+        public string Log_id { get; set; }
     }
 }

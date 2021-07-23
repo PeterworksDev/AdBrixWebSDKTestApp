@@ -45,6 +45,7 @@
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">EventName</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">EventTime</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">ServerTime</th>
+    <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">LogId</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Platform</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Carrier</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">DeviceModel</th>
@@ -71,6 +72,7 @@
             var language = peterValue.Language;
             var country = peterValue.Country;
             var peter_parameter = peterValue.PeterParameter;
+            var log_id = peterValue.Log_id;
 
             var eventDateTime = new DateTime(1970, 1, 1).AddSeconds(eventTime).ToLocalTime();
             var serverDateTime = new DateTime(1970, 1, 1).AddSeconds(serverTime).ToLocalTime();
@@ -84,6 +86,7 @@
                 <td class="border-2 text-center text-xs px-2 py-2">@eventName</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@eventDateTime</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@serverDateTime</td>
+                <td class="border-2 text-center text-xs px-2 py-2">@log_id</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@platform</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@carrier</td>
                 <td class="border-2 text-center text-xs px-2 py-2">@deviceModel</td>
@@ -93,10 +96,10 @@
             </tr>
         }
     }
-    else
+    @if (_peterworksList == null || _peterworksList.Count == 0)
     {
         <tr>
-            <td colspan="14" class="border-2 px-8 py-2 text-center">There is no Data</td>
+            <td colspan="14" class="border-2 px-8 py-2 text-center">There is no Data. Please Check your Appkey and Date</td>
         </tr>
     }
 </table>
@@ -142,20 +145,48 @@
                     var eventTime = Convert.ToInt64(getEventTime);
                     var serverTime = Convert.ToInt64(getServerTime);
 
+                    var attrTypeString = items.GetProperty("attrType").ToString();
+                    var platformString = items.GetProperty("platform").ToString();
+
+                    switch (attrTypeString)
+                    {
+                        case "0":
+                            _peterworks.AttrType = "New Install";
+                            break;
+
+                        case "1":
+                            _peterworks.AttrType = "Re Install";
+                            break;
+
+                        case "2":
+                            _peterworks.AttrType = " Deeplink Open";
+                            break;
+                    }
+
+                    switch (platformString)
+                    {
+                        case "1":
+                            _peterworks.Platform = "Android";
+                            break;
+
+                        case "2":
+                            _peterworks.Platform = "iOS";
+                            break;
+                    }
+
                     _peterworks.Appkey = items.GetProperty("appkey").ToString();
                     _peterworks.PostbackType = items.GetProperty("postbackType").ToString();
                     _peterworks.Adid = items.GetProperty("adid").ToString();
                     _peterworks.Idfv = items.GetProperty("idfv").ToString();
-                    _peterworks.AttrType = items.GetProperty("attrType").ToString();
                     _peterworks.EventName = items.GetProperty("eventName").ToString();
                     _peterworks.EventTime = eventTime;
                     _peterworks.ServerTime = serverTime;
-                    _peterworks.Platform = items.GetProperty("platform").ToString();
                     _peterworks.Carrier = items.GetProperty("carrier").ToString();
                     _peterworks.DeviceModel = items.GetProperty("deviceModel").ToString();
                     _peterworks.Language = items.GetProperty("language").ToString();
                     _peterworks.Country = items.GetProperty("country").ToString();
                     _peterworks.PeterParameter = items.GetProperty("peterParameter").ToString();
+                    _peterworks.Log_id = items.GetProperty("logId").ToString();
 
                     _peterworksList.Add(_peterworks);
                 }
