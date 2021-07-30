@@ -28,6 +28,6 @@ function AdBrixInit() {
         isIncludeUtm: true,
         isIncludeNaver: true,
         isIncludeReferrer: true,
-        isincludeGclid: true,
+        isIncludeGclid: true,
     });
 }

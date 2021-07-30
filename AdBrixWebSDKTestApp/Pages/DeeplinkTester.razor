@@ -17,9 +17,23 @@
     </td>
 </tr>
 
+<tr>
+    <td>
+        <p class="mx-2">Tracking link Value </p>
+    </td>
+    <td>
+        <input class="border py-2 px-3" placeholder="Deeplink" @bind="@TrackLink"/>
+    </td>
+    <td>
+        <a class="btn btn-primary mx-2" href="@TrackLink">TrackingLinkClick</a>
+    </td>
+</tr>
+
 @code {
 
     private string Deeplink = "thehyundaitohome://tohome.thehyundai.com/front/dp/dpd/mgzDetail.do?mgzNo=210302100576001&utm_source=kakao&utm_medium=bizboard&utm_content=새들러&ReferCode=232&tcCode=0000000095&kwCode=0000373132";
+
+    private string TrackLink = "https://b4cTipZMwUGOXFYnJmtJ5w.adtouch-stage.adbrix.io/api/v1/click/gcT7KBtthkyry0yZIkzuvw";
 
     private void DeeplinkCall()
     {
