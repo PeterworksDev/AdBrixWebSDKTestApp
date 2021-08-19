@@ -1,6 +1,5 @@
 @page "/PeterWorksPostback"
 @using AdBrixWebSDKTestApp.Models
-@using System.Text.Json
 @inject HttpClient HttpClient
 @inject IJSRuntime JsRuntime
 
@@ -30,10 +29,10 @@
     <td>
         <input type="date" class="border py-2 px-3 my-0.5" @bind="_endDate"/>
     </td>
+    <td>
+        <button class="btn btn-primary mx-2" @onclick="GetPostbackButton">GetPostback</button>
+    </td>
 </table>
-<br>
-<button class="btn btn-primary mx-2" @onclick="GetPostback">GetPostback</button>
-<br>
 <br>
 <table>
     <thead>
@@ -53,7 +52,6 @@
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Country</th>
     <th class="bg-blue-400 border-2 text-center text-white px-2 py-2">Peter_parameter</th>
     </thead>
-
     @if (_peterworksList != null)
     {
         foreach (var peterValue in _peterworksList)
@@ -99,10 +97,26 @@
     @if (_peterworksList == null || _peterworksList.Count == 0)
     {
         <tr>
-            <td colspan="14" class="border-2 px-8 py-2 text-center">There is no Data. Please Check your Appkey and Date</td>
+            <td colspan="15" class="border-2 px-8 py-2 text-center">There is no Data. Please Check your Appkey and Date</td>
         </tr>
     }
 </table>
+<br>
+<div class="flex justify-center items-center">
+    <table>
+        <td>
+            <button class="btn btn-primary mx-10" @onclick="BackButton">BackButton</button>
+        </td>
+        <td>
+            <h1 class="font-sans text-3xl font-bold mx-10">@_pageNumber</h1>
+        </td>
+        <td>
+            <button class="btn btn-primary mx-10" @onclick="NextButton">NextButton</button>
+        </td>
+    </table>
+</div>
+<br>
+<br>
 
 @code {
 
@@ -112,6 +126,9 @@
     private DateTime _endDate = DateTime.Today.AddDays(1.0);
     private List<Peterworks> _peterworksList;
     private Peterworks _peterworks;
+    private int _pageNumber;
+    IEnumerable<KeyValuePair<int, IEnumerable<Peterworks>>> ReportData = new List<KeyValuePair<int, IEnumerable<Peterworks>>>();
+    List<KeyValuePair<int, IEnumerable<Peterworks>>> _PeterworksView;
 
     private List<string> postbackTypeList()
     {
@@ -122,81 +139,143 @@
         return postbackTypeName;
     }
 
-    private async Task<List<Peterworks>> GetPostback()
+    private async void GetPostbackButton()
     {
-        _peterworksList = new List<Peterworks>();
+        _pageNumber = 0;
+        ReportData = await GetPostback();
 
-        var startDateUnix = (long) _startDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
-        var endDateUnix = (long) _endDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
+        if (ReportData != null)
+        {
+            _PeterworksView = ReportData.ToList();
+            var showData = _PeterworksView[_pageNumber];
+
+            ShowPeterworks(showData.Value);
+            await JsRuntime.InvokeVoidAsync("console.log", "::: PagingNumber::: " + showData.Key);
+        }
+
+        _pageNumber++;
+        StateHasChanged();
+    }
+
+    private void BackButton()
+    {
+        if (1 >= _pageNumber)
+        {
+            JsRuntime.InvokeVoidAsync("alert", "::: Cannot Go Backward :::");
+        }
+        else
+        {
+            var showData = _PeterworksView[_pageNumber];
+            ShowPeterworks(showData.Value);
+            _pageNumber--;
+            JsRuntime.InvokeVoidAsync("console.log", "::: PagingNumber::: " + showData.Key);
+        }
+
+        if (_pageNumber == _PeterworksView.Count + 1)
+        {
+            _pageNumber--;
+            var showData = _PeterworksView[_pageNumber];
+            ShowPeterworks(showData.Value);
+        }
+    }
+
+    private void NextButton()
+    {
+        if (_pageNumber == _PeterworksView.Count + 1)
+        {
+            JsRuntime.InvokeVoidAsync("alert", "::: No More Content :::");
+        }
+        else
+        {
+            var showData = _PeterworksView[_pageNumber];
+            ShowPeterworks(showData.Value);
+            _pageNumber++;
+            JsRuntime.InvokeVoidAsync("console.log", "::: PagingNumber::: " + showData.Key);
+        }
+    }
+
+    private async Task<IEnumerable<KeyValuePair<int, IEnumerable<Peterworks>>>> GetPostback()
+    {
+        IEnumerable<KeyValuePair<int, IEnumerable<Peterworks>>> myData = new List<KeyValuePair<int, IEnumerable<Peterworks>>>();
+
+        var startDateUnix = (long)_startDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
+        var endDateUnix = (long)_endDate.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
 
         if (Appkey != null)
         {
-            var jsonData = await HttpClient.GetFromJsonAsync<JsonElement[]>($"https://peterpostback.azurewebsites.net/api/Peterworks/get/appkey={Appkey}&postback_type={_postbackType}&startdate={startDateUnix}&enddate={endDateUnix}");
-
-            if (jsonData != null)
-            {
-                foreach (var items in jsonData)
-                {
-                    _peterworks = new Peterworks();
-
-                    var getEventTime = items.GetProperty("eventTime").ToString();
-                    var getServerTime = items.GetProperty("serverTime").ToString();
-
-                    var eventTime = Convert.ToInt64(getEventTime);
-                    var serverTime = Convert.ToInt64(getServerTime);
-
-                    var attrTypeString = items.GetProperty("attrType").ToString();
-                    var platformString = items.GetProperty("platform").ToString();
-
-                    switch (attrTypeString)
-                    {
-                        case "0":
-                            _peterworks.AttrType = "New Install";
-                            break;
-
-                        case "1":
-                            _peterworks.AttrType = "Re Install";
-                            break;
-
-                        case "2":
-                            _peterworks.AttrType = " Deeplink Open";
-                            break;
-                    }
-
-                    switch (platformString)
-                    {
-                        case "1":
-                            _peterworks.Platform = "Android";
-                            break;
-
-                        case "2":
-                            _peterworks.Platform = "iOS";
-                            break;
-                    }
-
-                    _peterworks.Appkey = items.GetProperty("appkey").ToString();
-                    _peterworks.PostbackType = items.GetProperty("postbackType").ToString();
-                    _peterworks.Adid = items.GetProperty("adid").ToString();
-                    _peterworks.Idfv = items.GetProperty("idfv").ToString();
-                    _peterworks.EventName = items.GetProperty("eventName").ToString();
-                    _peterworks.EventTime = eventTime;
-                    _peterworks.ServerTime = serverTime;
-                    _peterworks.Carrier = items.GetProperty("carrier").ToString();
-                    _peterworks.DeviceModel = items.GetProperty("deviceModel").ToString();
-                    _peterworks.Language = items.GetProperty("language").ToString();
-                    _peterworks.Country = items.GetProperty("country").ToString();
-                    _peterworks.PeterParameter = items.GetProperty("peterParameter").ToString();
-                    _peterworks.Log_id = items.GetProperty("logId").ToString();
-
-                    _peterworksList.Add(_peterworks);
-                }
-            }
+            var jsonData = await HttpClient.GetFromJsonAsync<IEnumerable<KeyValuePair<int, IEnumerable<Peterworks>>>>($"https://peterpostback.azurewebsites.net/api/Peterworks/getpage/appkey={Appkey}&postback_type={_postbackType}&startdate={startDateUnix}&enddate={endDateUnix}&pagesize=10");
+            myData = jsonData;
         }
         else
         {
             await JsRuntime.InvokeVoidAsync("alert", "::: AppKey is Empty !!! ::: ");
         }
+        StateHasChanged();
 
+        return myData;
+    }
+
+    private List<Peterworks> ShowPeterworks(IEnumerable<Peterworks> peterworks)
+    {
+        _peterworksList = new List<Peterworks>();
+
+        foreach (var items in peterworks)
+        {
+            _peterworks = new Peterworks();
+
+            var getEventTime = items.EventTime.ToString();
+            var getServerTime = items.ServerTime.ToString();
+
+            var eventTime = Convert.ToInt64(getEventTime);
+            var serverTime = Convert.ToInt64(getServerTime);
+
+            var attrTypeString = items.AttrType;
+            var platformString = items.Platform;
+
+            switch (attrTypeString)
+            {
+                case "0":
+                    _peterworks.AttrType = "New Install";
+                    break;
+
+                case "1":
+                    _peterworks.AttrType = "Re Install";
+                    break;
+
+                case "2":
+                    _peterworks.AttrType = " Deeplink Open";
+                    break;
+            }
+
+            switch (platformString)
+            {
+                case "1":
+                    _peterworks.Platform = "Android";
+                    break;
+
+                case "2":
+                    _peterworks.Platform = "iOS";
+                    break;
+            }
+
+            _peterworks.Appkey = items.Appkey;
+            _peterworks.PostbackType = items.PostbackType;
+            _peterworks.Adid = items.Adid;
+            _peterworks.Idfv = items.Idfv;
+            _peterworks.EventName = items.EventName;
+            _peterworks.EventTime = eventTime;
+            _peterworks.ServerTime = serverTime;
+            _peterworks.Carrier = items.Carrier;
+            _peterworks.DeviceModel = items.DeviceModel;
+            _peterworks.Language = items.Language;
+            _peterworks.Country = items.Country;
+            _peterworks.PeterParameter = items.PeterParameter;
+            _peterworks.Log_id = items.Log_id;
+
+            _peterworksList.Add(_peterworks);
+        }
+
+        StateHasChanged();
         return _peterworksList;
     }
 

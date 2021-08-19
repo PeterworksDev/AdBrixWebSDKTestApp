@@ -1,37 +1,39 @@
+using System.Text.Json.Serialization;
+
 namespace AdBrixWebSDKTestApp.Models
 {
     public class Peterworks
     {
         public string Id { get; set; }
 
-        public string Appkey { get; set; }
+        [JsonPropertyName("appkey")] public string Appkey { get; set; }
 
-        public string PostbackType { get; set; }
+        [JsonPropertyName("postbackType")] public string PostbackType { get; set; }
 
-        public string Adid { get; set; }
+        [JsonPropertyName("adid")] public string Adid { get; set; }
 
-        public string Idfv { get; set; }
+        [JsonPropertyName("idfv")] public string Idfv { get; set; }
 
-        public string AttrType { get; set; }
+        [JsonPropertyName("attrType")] public string AttrType { get; set; }
 
-        public string EventName { get; set; }
+        [JsonPropertyName("eventName")] public string EventName { get; set; }
 
-        public long EventTime { get; set; }
+        [JsonPropertyName("eventTime")] public long EventTime { get; set; }
 
-        public long ServerTime { get; set; }
+        [JsonPropertyName("serverTime")] public long ServerTime { get; set; }
 
-        public string Platform { get; set; }
+        [JsonPropertyName("platform")] public string Platform { get; set; }
 
-        public string Carrier { get; set; }
+        [JsonPropertyName("carrier")] public string Carrier { get; set; }
 
-        public string DeviceModel { get; set; }
+        [JsonPropertyName("deviceModel")] public string DeviceModel { get; set; }
 
-        public string Language { get; set; }
+        [JsonPropertyName("language")] public string Language { get; set; }
 
-        public string Country { get; set; }
+        [JsonPropertyName("country")] public string Country { get; set; }
 
-        public string PeterParameter { get; set; }
+        [JsonPropertyName("peterParameter")] public string PeterParameter { get; set; }
 
-        public string Log_id { get; set; }
+        [JsonPropertyName("logId")] public string Log_id { get; set; }
     }
 }
