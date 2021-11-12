@@ -1,5 +1,4 @@
 @page "/MLNetTestPage"
-@using SampleClassification.Model
 <h1 class="font-sans text-3xl font-bold">ML.NET Test Page</h1>
 <tr>
     <td>
@@ -32,15 +31,6 @@
 
     private void GetResult()
     {
-        var input = new ModelInput
-        {
-            Col0 = inputText
-        };
-
-        var result = ConsumeModel.Predict(input);
-        var sentiment = result.Prediction == "1" ? "Positive" : "Nagative";
-
-        sentimentResult = sentiment;
     }
 
 }

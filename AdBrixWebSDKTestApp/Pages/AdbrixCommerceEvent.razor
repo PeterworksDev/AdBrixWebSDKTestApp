@@ -145,12 +145,12 @@
             <button class="btn btn-primary" @onclick="Product3Set">Product 3 set</button>
         </td>
     </tr>
-        <tr>
-            <td class="border-2 px-8 py-2">Product clear</td>
-            <td colspan="3" class="border-2 px-8 py-2 text-center">
-                <button class="btn btn-primary" @onclick="ProductClear">Product Clear</button>
-            </td>
-        </tr>
+    <tr>
+        <td class="border-2 px-8 py-2">Product clear</td>
+        <td colspan="3" class="border-2 px-8 py-2 text-center">
+            <button class="btn btn-primary" @onclick="ProductClear">Product Clear</button>
+        </td>
+    </tr>
 </table>
 <br>
 <h1 class="text-2xl font-sans">AdBrix Commerce Event Utility</h1>
@@ -233,7 +233,7 @@
     private string ProductCategory3_2 { get; set; }
     private string ProductCategory3_3 { get; set; }
     private string ProductCategory3_4 { get; set; }
-    
+
     private string OrderID { get; set; }
     private Double OrderSale { get; set; }
     private Double Discount { get; set; }
@@ -273,6 +273,11 @@
 
     private List<object> productList = new List<object>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        await JsRuntime.InvokeVoidAsync("");
+    }
+
     private async void Product1Set()
     {
         object categorySet;
@@ -305,7 +310,6 @@
         {
             productList.Add(productSet1);
         }
-        
     }
 
     private async void Product2Set()
@@ -387,12 +391,11 @@
         {
             productList.Clear();
             JsRuntime.InvokeVoidAsync("alert", "Product is reset!!!");
-
         }
         else
         {
             JsRuntime.InvokeVoidAsync("alert", "There is no product to reset!!");
-
         }
     }
+
 }
